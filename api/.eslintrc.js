@@ -18,7 +18,8 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
     'no-return-await': 0,
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    'space-before-function-paren': 0
 
   }
 }

@@ -1,6 +1,10 @@
 # worknet
-soon
+will be soon
+
+### Docker (elasticsearch)
+
+https://www.docker.elastic.co/
 
 ```
-docker run --name worknet -p 27017:27017 -p 9200:9200 -v //C/projects/worknet:/mylocaldata -w /mylocaldata -itd drsmog/mep:latest
+docker run --name worknet -p 9200:9200 -itd docker.elastic.co/elasticsearch/elasticsearch:6.1.1
 ```
