@@ -29,7 +29,30 @@ async function addSkill(skill) {
   return await client.index(options)
 }
 
+async function editSkill(id, skill) {
+  const options = {
+    index,
+    type,
+    id,
+    body: skill
+  }
+
+  return await client.index(options)
+}
+
+async function deleteSkill(id) {
+  const options = {
+    index,
+    type,
+    id
+  }
+
+  return await client.delete(options)
+}
+
 module.exports = {
   getSkills,
-  addSkill
+  addSkill,
+  editSkill,
+  deleteSkill
 }
