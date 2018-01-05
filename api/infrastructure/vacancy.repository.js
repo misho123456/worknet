@@ -21,6 +21,30 @@ async function getVacancies() {
   return result.hits.hits.map(utils.toObject)
 }
 
+async function getById(id) {
+  const options = {
+    index,
+    type,
+    id
+  }
+
+  let result = await client.get(options)
+
+  return utils.toObject(result)
+}
+
+async function getByAuthorUserName(userName) {
+  const options = {
+    index,
+    type,
+    q: `authorUserName:${userName}`
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(utils.toObject)
+}
+
 async function addVacancy(vacancy) {
   let options = {
     index,
@@ -59,5 +83,7 @@ module.exports = {
   getVacancies,
   addVacancy,
   editVacancy,
-  deleteVacancy
+  deleteVacancy,
+  getById,
+  getByAuthorUserName
 }
