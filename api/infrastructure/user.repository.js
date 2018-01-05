@@ -7,8 +7,8 @@ const client = new elasticsearch.Client({
 
 const utils = require('./utils')
 
-const index = 'user'
-const type = 'user'
+const index = config.get('elastic.usersIndex')
+const type = config.get('elastic.usersType')
 
 async function getUsers() {
   let options = {

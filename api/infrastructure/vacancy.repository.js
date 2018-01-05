@@ -7,8 +7,8 @@ const client = new elasticsearch.Client({
 
 const utils = require('./utils')
 
-const index = 'vacancy'
-const type = 'vacancy'
+const index = config.get('elastic.vacanciesIndex')
+const type = config.get('elastic.vacanciesType')
 
 async function getVacancies() {
   let options = {

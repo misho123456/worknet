@@ -1,2 +1,6 @@
 elastic:
   host: 'localhost:9200'
+  usersIndex: 'user'
+  usersType: 'user'
+  vacanciesIndex: 'vacancy'
+  vacanciesType: 'vacancy'
