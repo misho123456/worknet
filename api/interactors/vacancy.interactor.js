@@ -5,6 +5,10 @@ async function getList() {
   return await vacancyRepository.getVacancies()
 }
 
+async function getById(id) {
+  return await vacancyRepository.getById(id)
+}
+
 async function getUserVacancies(userName) {
   return await vacancyRepository.getByAuthorUserName(userName)
 }
@@ -42,5 +46,6 @@ module.exports = {
   addVacancy,
   editVacancy,
   deleteVacancy,
-  getUserVacancies
+  getUserVacancies,
+  getById
 }

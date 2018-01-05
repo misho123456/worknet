@@ -19,6 +19,12 @@ router.get('/own', function(req, res, next) {
     .catch(next)
 })
 
+router.get('/:id', function(req, res, next) {
+  vacancyInteractor.getById(req.params.id)
+    .then(res.send.bind(res))
+    .catch(next)
+})
+
 router.post('/', function(req, res, next) {
   const userName = utils.getUserNameFromRequest(req)
 
