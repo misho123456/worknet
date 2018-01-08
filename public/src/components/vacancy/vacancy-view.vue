@@ -67,7 +67,7 @@ export default {
     languagesText() {
       let languages = this.vacancy.languages || []
 
-      return languages.join(' , ')
+      return languages.map(item => item.languageName).join(' , ')
     },
     jobType() {
       let types = []
