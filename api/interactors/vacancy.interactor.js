@@ -1,8 +1,8 @@
 const vacancyRepository = require('../infrastructure/vacancy.repository')
 const PermissionError = require('../exceptions/permission.error')
 
-async function getList() {
-  return await vacancyRepository.getVacancies()
+async function getList(queryString) {
+  return await vacancyRepository.getVacancies(queryString)
 }
 
 async function getById(id) {
