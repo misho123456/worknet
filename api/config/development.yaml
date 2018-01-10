@@ -1,0 +1,6 @@
+elastic:
+  host: 'localhost:7777'
+  usersIndex: 'user'
+  usersType: 'user'
+  vacanciesIndex: 'job'
+  vacanciesType: 'job'

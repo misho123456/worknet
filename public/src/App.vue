@@ -20,4 +20,8 @@ export default {
   margin-top: 60px;
   background: whitesmoke;
 }
+
+.flex {
+  flex: 1;
+}
 </style>
