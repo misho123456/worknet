@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import profile from '../components/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
+import vacancyAdd from '../components/vacancy/vacancy-add'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       name: 'vacancy-view',
       component: vacancyView,
       props: true
+    },
+    {
+      path: '/vacancies/new',
+      name: 'vacancy-add',
+      component: vacancyAdd
     }
   ]
 })

@@ -1,5 +1,8 @@
 <template>
 <div id="vacancies">
+  <b-button  variant="primary" @click="redirectToVacancyAdd">
+      ახალი ვაკანსია
+  </b-button>
   <div class="searchArea">
     <div class="form-group flex" @keyup.enter="search">
       <input type="text" class="form-control" v-model="query">
@@ -42,6 +45,9 @@ export default {
         .then(response => {
           this.vacancies = response.body
         })
+    },
+    redirectToVacancyAdd() {
+      this.$router.push('/vacancies/new')
     }
   }
 }
