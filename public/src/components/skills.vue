@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>skills component</h2>
     <div class="skills-container">
       <b-input-group v-if="editable">
         <b-form-input type="text" v-model="newSkill" placeholder="მაგ. ანალიტიკოსი"></b-form-input>
