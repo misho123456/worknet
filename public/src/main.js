@@ -2,8 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
-import vueResource from 'vue-resource'
-
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -15,7 +14,7 @@ require('font-awesome/css/font-awesome.min.css')
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
-Vue.use(vueResource)
+Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
 new Vue({

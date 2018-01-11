@@ -33,7 +33,7 @@ export default {
   created() {
     this.$http.get(baseUrl)
       .then(response => {
-        this.vacancies = response.body
+        this.vacancies = response.data
       })
   },
   methods: {
@@ -43,7 +43,7 @@ export default {
     search() {
       this.$http.get(baseUrl, {params: {query: this.query}})
         .then(response => {
-          this.vacancies = response.body
+          this.vacancies = response.data
         })
     },
     redirectToVacancyAdd() {
