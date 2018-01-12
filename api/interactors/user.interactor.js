@@ -8,7 +8,7 @@ async function getList() {
 }
 
 async function getUserProfile(userName) {
-  let user = await userRepository.getUserByUserName()
+  let user = await userRepository.getUserByUserName(userName)
 
   return _.omit(user, ['userName', 'isActive', 'deactivationDate'])
 }
@@ -30,7 +30,7 @@ async function fillUserProfile(userName, profile) {
 }
 
 async function addSkill(userName, skill) {
-  let userObject = await userRepository.getUserByUserName()
+  let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
 
@@ -48,7 +48,7 @@ async function addSkill(userName, skill) {
 }
 
 async function removeSkill(userName, skill) {
-  let userObject = await userRepository.getUserByUserName()
+  let userObject = await userRepository.getUserByUserName(userName)
 
   let user = factory.createUser(userObject)
 
