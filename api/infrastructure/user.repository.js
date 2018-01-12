@@ -36,8 +36,6 @@ async function getUserByUserName(userName) {
 
   let result = await client.search(options)
 
-  console.log(result)
-
   if (result.hits.total === 0) return null
 
   return utils.toObject(result.hits.hits[0])
