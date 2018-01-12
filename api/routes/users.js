@@ -40,7 +40,7 @@ router.post('/profile/skills', function(req, res, next) {
     .catch(next)
 })
 
-router.delete('/profile/:skillName', function(req, res, next) {
+router.delete('/profile/skills/:skillName', function(req, res, next) {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.removeSkill(userName, req.params.skillName)
