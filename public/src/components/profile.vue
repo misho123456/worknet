@@ -90,7 +90,7 @@
 
   const baseUrl = '/api/users/profile'
   const headers = {
-    userName: 'test'
+    username: 'test'
   } // temporary headers until um is written
 
   export default {
@@ -98,11 +98,13 @@
     data() {
       return {
         msg: 'profile page',
-        myProfile: {}
+        myProfile: {
+          skills: []
+        }
       }
     },
     created() {
-      this.$http.get(baseUrl, {headers: headers})
+      this.$http.get(baseUrl, {headers})
         .then(response => {
           this.myProfile = response.data
         })
@@ -129,7 +131,11 @@
           console.log('this skill already exists')
           return
         }
-        this.myProfile.skills.push({ skillName: skill })
+        let skillObject = { skillName: skill }
+        this.$http.post(baseUrl + '/skills', skillObject, {headers})
+          .then(() => {
+            this.myProfile.skills.push(skillObject)
+          })
       },
       onRemoveSkill(skill) {
         let indexOfSkill = this.myProfile.skills.findIndex(t => t.skillName === skill)
@@ -138,7 +144,13 @@
           console.log('can\'t find index of skill')
           return
         }
-        this.myProfile.skills.splice(indexOfSkill, 1)
+
+        const url = baseUrl + `/skills/${skill}`
+
+        this.$http.delete(url, {headers})
+          .then(() => {
+            this.myProfile.skills.splice(indexOfSkill, 1)
+          })
       },
       keyOfObject(obj) {
         let objString = JSON.stringify(obj)
