@@ -44,17 +44,26 @@ const jobIndex = {
     }
   }
 }
+const libIndex = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
+
 const testUsers = [{
   'firstName': 'სახელი',
   'lastName': 'გვარი',
   'personalId': '00000000000',
   'birthDate': '1991-01-11T00:00:00',
   'genderName': 'მამრობითი',
-  'registrationRegionName': 'აჭარა',
-  'registrationLocationName': 'ბათუმი',
+  'registrationLocationName': 'აჭარა',
+  'registrationLocationUnitName': 'ბათუმი',
   'registrationAddressDescription': 'საქართველო, ქალაქი ბათუმი, პეტრე მელიქიშვილის ქუჩა, N 91, ბინა 43',
-  'factRegionName': 'თბილისი',
-  'factLocationName': 'ისანი',
+  'factLocationName': 'თბილისი',
+  'factLocationUnitName': 'ისანი',
   'factAddressDescription': 'დიდი დიღომი 2 ნაბიჯთან',
   'mobileNumber': '591000000',
   'email': 'TTT@gmail.com',
@@ -246,18 +255,166 @@ const testJobs = [{
   ]
 }]
 
-async function seedUserData(users, index, indexOption, type, dropIndexIfExists = false) {
+const testLibs = [{
+  locationsInGeorgia: [
+    {
+      locationName: 'თბილისი',
+      units: [
+        { locationUnitName: 'ვაკე' },
+        { locationUnitName: 'ისანი' },
+        { locationUnitName: 'კრწანისი' },
+        { locationUnitName: 'მთაწმინდა' },
+        { locationUnitName: 'გლდანი' },
+        { locationUnitName: 'დიდუბე' },
+        { locationUnitName: 'ნაძალადევი' },
+        { locationUnitName: 'ჩუღურეთი' },
+        { locationUnitName: 'საბურთალო' },
+        { locationUnitName: 'სამგორი' }
+      ]
+    },
+    {
+      locationName: 'გურია',
+      units: [
+        { locationUnitName: 'ოზურგეთი' },
+        { locationUnitName: 'ლანჩხუთი' },
+        { locationUnitName: 'ჩოხატაური' }
+      ]
+    },
+    {
+      locationName: 'რაჭა-ლეჩხუმი & ქვემო სვანეთი',
+      units: [
+        { locationUnitName: 'ამბროლაური' },
+        { locationUnitName: 'ლენტეხი' },
+        { locationUnitName: 'ონი' },
+        { locationUnitName: 'ცაგერი' }
+      ]
+    },
+    {
+      locationName: 'კახეთი',
+      units: [
+        { locationUnitName: 'ახმეტა' },
+        { locationUnitName: 'გურჯაანი' },
+        { locationUnitName: 'დედოფლის წყარო' },
+        { locationUnitName: 'თელავი' },
+        { locationUnitName: 'ლაგოდეხი' },
+        { locationUnitName: 'საგარეჯო' },
+        { locationUnitName: 'სიღნაღი' },
+        { locationUnitName: 'ყვარლი' }
+      ]
+    },
+    {
+      locationName: 'იმერეთი',
+      units: [
+        { locationUnitName: 'ბაღდათი' },
+        { locationUnitName: 'ვანი' },
+        { locationUnitName: 'ზესტაფონი' },
+        { locationUnitName: 'თერჯოლა' },
+        { locationUnitName: 'სამტრედია' },
+        { locationUnitName: 'საჩხერე' },
+        { locationUnitName: 'ტყიბული' },
+        { locationUnitName: 'ქუთაისი' },
+        { locationUnitName: 'წყალტუბო' },
+        { locationUnitName: 'ჭიათურა' },
+        { locationUnitName: 'ხარაგაული' },
+        { locationUnitName: 'ხონი' }
+      ]
+    },
+    {
+      locationName: 'მცხეთა-მთიანეთი  ',
+      units: [
+        { locationUnitName: 'ახალგორი' },
+        { locationUnitName: 'დუშეთი' },
+        { locationUnitName: 'თიანეთი' },
+        { locationUnitName: 'მცხეთა' },
+        { locationUnitName: 'ყაზბეგი' }
+      ]
+    },
+    {
+      locationName: 'სამეგრელო-ზემო სვანეთი',
+      units: [
+        { locationUnitName: 'აბაშა' },
+        { locationUnitName: 'ზუგდიდი' },
+        { locationUnitName: 'მარტვილი' },
+        { locationUnitName: 'მესტია' },
+        { locationUnitName: 'სენაკი' },
+        { locationUnitName: 'ფოთი' },
+        { locationUnitName: 'ჩხოროწყუ' },
+        { locationUnitName: 'წალენჯიხა' },
+        { locationUnitName: 'ხობი' }
+      ]
+    },
+    {
+      locationName: 'სამცხე-ჯავახეთი',
+      units: [
+        { locationUnitName: 'ადიგენი' },
+        { locationUnitName: 'ასპინძა' },
+        { locationUnitName: 'ახალქალაქი' },
+        { locationUnitName: 'ახალციხე' },
+        { locationUnitName: 'ბორჯომი' },
+        { locationUnitName: 'ნინოწმინდა' }
+      ]
+    },
+    {
+      locationName: 'ქვემო ქართლი ',
+      units: [
+        { locationUnitName: 'ბოლნისი' },
+        { locationUnitName: 'გარდაბნი' },
+        { locationUnitName: 'დმანისი' },
+        { locationUnitName: 'თეთრი წყარო' },
+        { locationUnitName: 'მარნეული' },
+        { locationUnitName: 'რუსთავი' },
+        { locationUnitName: 'წალკის' }
+      ]
+    },
+    {
+      locationName: 'შიდა ქართლი ',
+      units: [
+        { locationUnitName: 'გორი' },
+        { locationUnitName: 'კასპი' },
+        { locationUnitName: 'ქარელი' },
+        { locationUnitName: 'ხაშური' }
+      ]
+    },
+    {
+      locationName: 'აჭარის ავტონომიური რესპუბლიკა',
+      units: [
+        { locationUnitName: 'ბათუმი' },
+        { locationUnitName: 'ქედა' },
+        { locationUnitName: 'ქობულეთი' },
+        { locationUnitName: 'შუახევი' },
+        { locationUnitName: 'ხელვაჩაური' },
+        { locationUnitName: 'ხულო' }
+      ]
+    },
+    {
+      locationName: 'აფხაზეთი',
+      units: [
+        { locationUnitName: 'გაგრა' },
+        { locationUnitName: 'გუდაუთა' },
+        { locationUnitName: 'სოხუმი' },
+        { locationUnitName: 'გულრიფში' },
+        { locationUnitName: 'ოჩამჩირე' },
+        { locationUnitName: 'გალი' },
+        { locationUnitName: 'ტყვარჩელი' }
+      ]
+    }
+
+  ]
+}]
+
+async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
     if (dropIndexIfExists === true && exists === true) {
       await deleteIndex(index)
     }
     await createIndex(index, indexOption)
-    await insertData(index, type, users)
+    await insertData(index, type, data)
   } catch (error) {
     console.error(error)
   }
 }
 
-seedUserData(testUsers, 'user', userIndex, 'user', true)
-seedUserData(testJobs, 'job', jobIndex, 'job', true)
+seedData(testUsers, 'user', userIndex, 'user', true)
+seedData(testJobs, 'job', jobIndex, 'job', true)
+seedData(testLibs, 'lib', libIndex, 'location', true)

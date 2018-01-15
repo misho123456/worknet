@@ -1,6 +1,6 @@
 /**
- * Direct replacement for Java’s String.hashCode() method implemented in Javascript.
- * source from http://erlycoder.com/49/javascript-hash-functions-to-convert-string-into-integer-hash-
+ * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
+ * წყარო http://erlycoder.com/49/javascript-hash-functions-to-convert-string-into-integer-hash-
  * @param {*} str
  */
 const hashCode = (str) => {
