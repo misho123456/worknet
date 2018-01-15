@@ -2,7 +2,7 @@
   <div>
     <div class="skills-container">
       <b-input-group v-if="editable">
-        <b-form-input type="text" v-model="newSkill" placeholder="მაგ. ანალიტიკოსი"></b-form-input>
+        <b-form-input type="text" v-model="newSkill" placeholder="მაგ. ანალიტიკოსი" @keyup.enter.native="addSkill(newSkill)"></b-form-input>
         <b-input-group-button slot="right">
           <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
         </b-input-group-button>
@@ -32,6 +32,9 @@
       },
       removeSkill(skill) {
         this.$emit('onRemoveSkill', skill)
+      },
+      clear() {
+        this.newSkill = ''
       }
     }
   }

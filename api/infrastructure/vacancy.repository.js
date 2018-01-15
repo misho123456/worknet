@@ -55,7 +55,6 @@ async function addVacancy(vacancy) {
   }
 
   let result = await client.index(options)
-  console.log(result)
 
   return result.id
 }

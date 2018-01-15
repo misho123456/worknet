@@ -25,12 +25,16 @@ async function getUserByUserName(userName) {
   let options = {
     index,
     type,
-    q: `userName:${userName}`
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    }
   }
 
   let result = await client.search(options)
-
-  console.log(result)
 
   if (result.hits.total === 0) return null
 

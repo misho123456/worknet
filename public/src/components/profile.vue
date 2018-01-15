@@ -23,7 +23,7 @@
     </b-card>
 
     <b-card title="უნარები">
-      <skills :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
+      <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
     </b-card>
 
     <b-card title="განათლება">
@@ -88,164 +88,26 @@
   import skills from './skills'
   import utils from '../utils'
 
+  const baseUrl = '/api/users/profile'
+  const headers = {
+    username: 'test'
+  } // temporary headers until um is written
+
   export default {
     name: 'profile',
     data() {
       return {
         msg: 'profile page',
         myProfile: {
-          'firstName': 'სახელი',
-          'lastName': 'გვარი',
-          'personalId': '00000000000',
-          'birthDate': '1991-01-11T00:00:00',
-          'genderName': 'მამრობითი',
-          'registrationRegionName': 'აჭარა',
-          'registrationLocationName': 'ბათუმი',
-          'registrationAddressDescription': 'საქართველო, ქალაქი ბათუმი, პეტრე მელიქიშვილის ქუჩა, N 91, ბინა 43',
-          'factRegionName': 'თბილისი',
-          'factLocationName': 'ისანი',
-          'factAddressDescription': 'დიდი დიღომი 2 ნაბიჯთან',
-          'mobileNumber': '591000000',
-          'email': 'TTT@gmail.com',
-          'contactDescription': 'დამატებითი საკონტაქტო ინფორმაცია ბლაბლა',
-          'educations': [
-            {
-              'educationType': 'უმაღლესი განათლება',
-              'educationLevel': 'ბაკალავრი',
-              'institution': '       გორკის    სახ. აფხაზეთის სახელმწიფო უნივერსიტეტი',
-              'locationIsInGeorgia': true,
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ისანი',
-              'additionalAddressInfo': 'სასწავლებელზე დამატებითი ინფორმაცია',
-              'startMonth': 1,
-              'startYear': 2011,
-              'endMonth': 5,
-              'endYear': 2015,
-              'directionName': 'ბიზნესის ადმინისტრირება'
-            }
-          ],
-          'formalEducationLevelName': 'უმაღლესი - ბაკალავრი',
-          'formalEducationLevelId': '3',
-          'languages': [
-            {
-              'languageName': 'აფხაზური',
-              'languageLevel': 'არ ვფლობ'
-            },
-            {
-              'languageName': 'ქართული',
-              'languageLevel': 'თავისუფლად'
-            }
-          ],
-          'skills': [
-            {
-              'skillName': 'Javascript',
-              'endorsements': 0,
-              'users': [
-                'user_id1',
-                'user_id2',
-                'user_id3'
-              ]
-            },
-            {
-              'skillName': 'CSS',
-              'endorsements': 0,
-              'users': [
-                'user_id1',
-                'user_id2',
-                'user_id3'
-              ]
-            }
-          ],
-          'jobExperiences': [
-            {
-              'jobTitle': 'js developer',
-              'organization': 'შ.პ.ს. დელფოს გრუპი',
-              'description': 'სრული და ვრცეეელი  აღწერა',
-              'locationIsInGeorgia': true,
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ისანი',
-              'additionalAddressInfo': 'სამსახურზე დამატებითი ინფორმაცია',
-              'startMonth': 1,
-              'startYear': 2012,
-              'endMonth': 2,
-              'endYear': 2015,
-              'hasDocument': true
-            },
-            {
-              'jobTitle': 'მცხობელი მზარეული',
-              'organization': 'შ.პ.ს. მაქს-ფუდი',
-              'locationIsInGeorgia': false,
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ისანი',
-              'additionalAddressInfo': 'ხელიაქვს აუუფ',
-              'startMonth': 1,
-              'startYear': 2013,
-              'endMonth': 2,
-              'endYear': 2016,
-              'hasDocument': false
-            }
-          ],
-          'hasDrivingLicence': true,
-          'drivingLicenceA': true,
-          'drivingLicenceB': true,
-          'drivingLicenceC': true,
-          'drivingLicenceD': true,
-          'drivingLicenceE': true,
-          'drivingLicenceT1': true,
-          'drivingLicenceT2': true,
-          'airLicence': true,
-          'seaLicence': true,
-          'railwayLicence': true,
-          'militaryObligation': false,
-          'desirableJobs': [
-            {
-              'name': 'მთავარი მზარეულები '
-            },
-            {
-              'name': 'ფინანსთა მენეჯერები'
-            },
-            {
-              'name': 'საინფორმაციო ტექნოლოგიის ტრენერები'
-            },
-            {
-              'name': 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები'
-            }
-          ],
-          'desirableJobLocations': [
-            {
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ისანი'
-            },
-            {
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ვაკე'
-            }
-          ],
-          'desirableTrainings': [
-            {
-              'trainigName': 'კომპიუტერული პროგრამები და ბუღალტერია',
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ვაკე'
-            },
-            {
-              'trainigName': ' კულინარია, მზარეული',
-              'locationName': 'თბილისი',
-              'locationUnitName': 'ვაკე'
-            }
-          ],
-          'desirableSalary': 5000,
-          'fullTime': true,
-          'partTime': true,
-          'shiftBased': true,
-          'interestedInInternship': true,
-          'interestedToBeVolunteer': true,
-          'interestedInTemporaryJob': true,
-          'interestedInDangerousJob': true,
-          'interestedInTraining': true,
-          'unemployed': false,
-          'useMediationService': true
+          skills: []
         }
       }
+    },
+    created() {
+      this.$http.get(baseUrl, {headers})
+        .then(response => {
+          this.myProfile = response.data
+        })
     },
     computed: {
       profileTitle() {
@@ -269,7 +131,12 @@
           console.log('this skill already exists')
           return
         }
-        this.myProfile.skills.push({ skillName: skill })
+        let skillObject = { skillName: skill }
+        this.$http.post(baseUrl + '/skills', skillObject, {headers})
+          .then(() => {
+            this.myProfile.skills.push(skillObject)
+            this.$refs.skillInput.clear()
+          })
       },
       onRemoveSkill(skill) {
         let indexOfSkill = this.myProfile.skills.findIndex(t => t.skillName === skill)
@@ -278,7 +145,13 @@
           console.log('can\'t find index of skill')
           return
         }
-        this.myProfile.skills.splice(indexOfSkill, 1)
+
+        const url = baseUrl + `/skills/${skill}`
+
+        this.$http.delete(url, {headers})
+          .then(() => {
+            this.myProfile.skills.splice(indexOfSkill, 1)
+          })
       },
       keyOfObject(obj) {
         let objString = JSON.stringify(obj)

@@ -1,12 +1,14 @@
 const _ = require('lodash')
 const userRepository = require('../infrastructure/user.repository')
+const factory = require('../domain/factory')
+const RecordError = require('../exceptions/record.error')
 
 async function getList() {
   return await userRepository.getUsers()
 }
 
 async function getUserProfile(userName) {
-  let user = await userRepository.getUserByUserName()
+  let user = await userRepository.getUserByUserName(userName)
 
   return _.omit(user, ['userName', 'isActive', 'deactivationDate'])
 }
@@ -25,6 +27,42 @@ async function fillUserProfile(userName, profile) {
   }
 
   await userRepository.saveUser(userToSave)
+}
+
+async function addSkill(userName, skill) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addSkill(skill)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeSkill(userName, skill) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeSkill(skill)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
 }
 
 async function deactivateUserProfile(userName) {
@@ -53,5 +91,7 @@ module.exports = {
   getUserProfile,
   fillUserProfile,
   deactivateUserProfile,
-  activateUserProfile
+  activateUserProfile,
+  addSkill,
+  removeSkill
 }

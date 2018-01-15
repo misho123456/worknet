@@ -28,6 +28,30 @@ router.post('/profile', function(req, res, next) {
     .catch(next)
 })
 
+router.post('/profile/skills', function(req, res, next) {
+  let userName = utils.getUserNameFromRequest(req)
+
+  userInteractor.addSkill(userName, req.body.skillName)
+    .then(function() {
+      res.send({
+        success: true
+      })
+    })
+    .catch(next)
+})
+
+router.delete('/profile/skills/:skillName', function(req, res, next) {
+  let userName = utils.getUserNameFromRequest(req)
+
+  userInteractor.removeSkill(userName, req.params.skillName)
+    .then(function() {
+      res.send({
+        success: true
+      })
+    })
+    .catch(next)
+})
+
 router.post('/profile/deactivation', function(req, res, next) {
   let userName = utils.getUserNameFromRequest(req)
 
