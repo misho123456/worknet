@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const userRepository = require('../infrastructure/user.repository')
+const skillInterctor = require('./skill.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
 
@@ -36,6 +37,8 @@ async function addSkill(userName, skill) {
 
   try {
     user.addSkill(skill)
+
+    await skillInterctor.addIfNotExists(skill)
   } catch (e) {
     if (!(e instanceof RecordError)) {
       throw e
