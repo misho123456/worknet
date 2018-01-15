@@ -4,3 +4,5 @@ elastic:
   usersType: 'user'
   vacanciesIndex: 'vacancy'
   vacanciesType: 'vacancy'
+  skillsIndex: 'skill'
+  skillsType: 'skill'
