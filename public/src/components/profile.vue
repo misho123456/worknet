@@ -23,7 +23,7 @@
     </b-card>
 
     <b-card title="უნარები">
-      <skills :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
+      <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
     </b-card>
 
     <b-card title="განათლება">
@@ -135,6 +135,7 @@
         this.$http.post(baseUrl + '/skills', skillObject, {headers})
           .then(() => {
             this.myProfile.skills.push(skillObject)
+            this.$refs.skillInput.clear()
           })
       },
       onRemoveSkill(skill) {
