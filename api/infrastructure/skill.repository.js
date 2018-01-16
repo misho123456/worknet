@@ -14,7 +14,7 @@ async function search(queryString) {
   const options = {
     index,
     type,
-    q: queryString
+    q: '*' + queryString + '*'
   }
 
   let result = await client.search(options)
