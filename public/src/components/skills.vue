@@ -1,12 +1,26 @@
 <template>
   <div>
     <div class="skills-container">
-      <b-input-group v-if="editable">
-        <b-form-input type="text" v-model="newSkill" placeholder="მაგ. ანალიტიკოსი" @keyup.enter.native="addSkill(newSkill)"></b-form-input>
-        <b-input-group-button slot="right">
-          <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
-        </b-input-group-button>
-      </b-input-group>
+      <div style="position:relative">
+        <b-input-group v-if="editable">
+          <b-form-input type="text"
+          placeholder="მაგ. ანალიტიკოსი"
+          :value="newSkill"
+          @input="onInput"
+          @keyup.enter.native="addSkill(newSkill)"
+          @keydown.enter.native='enter'
+          @keydown.down.native='down'
+          @keydown.up.native='up'></b-form-input>
+          <b-input-group-button slot="right">
+            <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
+          </b-input-group-button>
+        </b-input-group>
+        <b-list-group v-if="openSuggestion">
+          <b-list-group-item v-for="(skill, index) in autocompleteSkills" :active="isActive(index)" @click="suggestionClick(index)">
+            {{ skill }}
+          </b-list-group-item>
+        </b-list-group>
+      </div>
       <div class="chip" v-for="item in list">
         {{item}}
         <span v-if="editable" class="closebtn" @click="removeSkill(item)">&times;</span>
@@ -18,12 +32,18 @@
 </template>
 
 <script>
+  const minimumChars = 2
+  const searchUrl = '/api/skills/search'
+
   export default {
     name: 'skills',
     props: ['list', 'editable'],
     data() {
       return {
-        newSkill: ''
+        newSkill: '',
+        autocompleteSkills: [],
+        open: false,
+        current: 0
       }
     },
     methods: {
@@ -35,6 +55,51 @@
       },
       clear() {
         this.newSkill = ''
+      },
+      enter() {
+        this.open = false
+
+        this.newSkill = this.autocompleteSkills[this.current]
+      },
+      up() {
+        if (this.current > 0) {
+          this.current--
+        }
+      },
+      down() {
+        if (this.current < this.autocompleteSkills.length - 1) {
+          this.current++
+        }
+      },
+      isActive(index) {
+        return index === this.current
+      },
+      suggestionClick(index) {
+        this.open = false
+
+        this.newSkill = this.autocompleteSkills[this.current]
+      },
+      async onInput(value) {
+        this.newSkill = value
+
+        if (value.length < minimumChars) return
+
+        let {data} = await this.$http.get(searchUrl, {params: {query: value}})
+
+        this.autocompleteSkills = data
+        console.log(data);
+
+        if (this.open === false) {
+          this.open = true
+          this.current = 0
+        }
+      }
+    },
+    computed: {
+      openSuggestion () {
+        return this.newSkill.length >= minimumChars &&
+          this.autocompleteSkills.length !== 0 &&
+          this.open === true
       }
     }
   }
