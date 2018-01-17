@@ -50,8 +50,9 @@
   </div>
 </template>
 <script>
-  import locations from './locations'
-  import libs from '../libs'
+  import locations from '../common/locations'
+  import libs from '../../libs'
+  import { bus } from '../common/bus'
 
   export default {
     name: 'maininfo',
@@ -90,12 +91,11 @@
         this.profileData.factLocationUnitName = location.locationUnitName
       },
       async tryToSaveMainInfo() {
-        // TODO notify
         try {
-          let response = await this.$http.put(this.baseUrl, this.profileData)
-          console.log(response.data)
+          await this.$http.put(this.baseUrl, this.profileData)
+          bus.$emit('success', 'პროფილი წარმატებით შეინახა')
         } catch (error) {
-          console.log(error)
+          bus.$emit('error', error)
         }
       }
     },

@@ -4,27 +4,26 @@ const utils = require('../utils')
 
 const baseUrl = '/api/users'
 
-router.get('/profile/maininfo', async (req, res) => {
+router.get('/profile/maininfo', async (req, res, next) => {
   try {
     // let userName = utils.getUserNameFromRequest(req)
     let userName = 'test'
     let result = await userInteractor.getUserMainInfo(userName)
+    next({ result })
     res.send(result)
   } catch (error) {
-    console.error(error)
-    res.status(500).send({ message: 'მოხდა შეცდომა', error })
+    next({ error })
   }
 })
 
-router.put('/profile/maininfo', async (req, res) => {
+router.put('/profile/maininfo', async (req, res, next) => {
   try {
     // let userName = utils.getUserNameFromRequest(req)
     let userName = 'test'
     let result = await userInteractor.updateMainInfo(userName, req.body)
-    res.send(result)
+    next({ result })
   } catch (error) {
-    console.error(error)
-    res.status(500).send({ message: 'მოხდა შეცდომა', error })
+    next({ error })
   }
 })
 

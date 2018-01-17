@@ -65,9 +65,9 @@
 </template>
 
 <script>
-  import skills from './skills'
+  import skills from '../common/skills'
   import maininfo from './maininfo'
-  import utils from '../utils'
+  import utils from '../../utils'
 
   const baseUrl = '/api/users/profile'
   const headers = {

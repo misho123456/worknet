@@ -17,8 +17,15 @@ app.use(vacancies.baseUrl, vacancies.router)
 app.use(users.baseUrl, users.router)
 app.use(libs.baseUrl, libs.router)
 
-app.use((err, req, res, next) => {
-  res.status(500).send(err.message)
+app.use((response, req, res, next) => {
+  // TODO logs
+  if (response.error) {
+    console.error(response.error)
+    let statusCode = response.error.statusCode || 500
+    let errorMessage = response.error.message || 'დაფიქსირდა შეცდომა'
+    return res.status(statusCode).send({ message: errorMessage, error: response.error })
+  }
+  res.send(response.result)
 })
 
 app.get('*', (req, res) => res.redirect('/'))

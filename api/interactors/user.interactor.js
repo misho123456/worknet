@@ -13,7 +13,7 @@ async function getUserMainInfo(userName) {
 }
 
 async function updateMainInfo(userName, mainInfo) {
-
+  throw new RecordError('ჩანაწერი ვერ მოიძებნა')
   let foundUser = await userRepository.getUserByUserName(userName)
 
   let userToSave
