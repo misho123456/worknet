@@ -21,6 +21,71 @@ async function getUsers() {
   return result.hits.hits.map(utils.toObject)
 }
 
+async function getMainInfo(userName) {
+  console.log(userName)
+
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'firstName',
+      'lastName',
+      'personalId',
+      'birthDate',
+      'genderName',
+      'registrationLocationName',
+      'registrationLocationUnitName',
+      'registrationAddressDescription',
+      'factLocationName',
+      'factLocationUnitName',
+      'factAddressDescription',
+      'mobileNumber',
+      'email',
+      'contactDescription'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return null
+
+  return utils.toObject(result.hits.hits[0])
+}
+
+async function updateMainInfo(userName, mainInfo) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      },
+      script: {
+        inline: 'ctx._source.factLocationUnitName = test',
+        params: { test: 'aaaaaaaaaa' }
+      }
+      // script: {
+      //   inline:
+      //     `ctx._source.factLocationUnitName=${mainInfo.factLocationUnitName};
+      //   ctx._source.mobileNumber=${mainInfo.mobileNumber};
+      //   `
+      // }
+    }
+  }
+  let result = await client.updateByQuery(options)
+  console.log(result)
+  return result
+}
+
 async function getUserByUserName(userName) {
   let options = {
     index,
@@ -55,6 +120,8 @@ async function saveUser(user) {
 
 module.exports = {
   getUsers,
+  getMainInfo,
+  updateMainInfo,
   getUserByUserName,
   saveUser
 }

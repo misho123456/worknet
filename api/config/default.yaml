@@ -6,3 +6,5 @@ elastic:
   vacanciesType: 'vacancy'
   skillsIndex: 'skill'
   skillsType: 'skill'
+  libIndex: 'lib'
+  locationType: 'location'

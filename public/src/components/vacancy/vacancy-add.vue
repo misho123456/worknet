@@ -41,7 +41,6 @@
 </div>
 </template>
 <script>
-const baseUrl = '/api/vacancies'
 
 export default {
   name: 'vacancy-add',
