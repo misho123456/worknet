@@ -7,7 +7,6 @@
           placeholder="მაგ. ანალიტიკოსი"
           :value="newSkill"
           @input="onInput"
-          @keyup.enter.native="addSkill(newSkill)"
           @keydown.enter.native='enter'
           @keydown.down.native='down'
           @keydown.up.native='up'></b-form-input>
@@ -16,7 +15,7 @@
           </b-input-group-button>
         </b-input-group>
         <b-list-group v-if="openSuggestion">
-          <b-list-group-item v-for="(skill, index) in autocompleteSkills" :active="isActive(index)" @click="suggestionClick(index)">
+          <b-list-group-item v-for="(skill, index) in autocompleteSkills" :active="isActive(index)" @click="suggestionClick(index)" :key="skill">
             {{ skill }}
           </b-list-group-item>
         </b-list-group>
@@ -47,8 +46,10 @@
       }
     },
     methods: {
-      addSkill(skill) {
-        this.$emit('onAddNewSkill', skill)
+      addSkill() {
+        if (!this.newSkill) return
+
+        this.$emit('onAddNewSkill', this.newSkill)
       },
       removeSkill(skill) {
         this.$emit('onRemoveSkill', skill)
@@ -56,10 +57,17 @@
       clear() {
         this.newSkill = ''
       },
-      enter() {
-        this.open = false
-
+      chooseSkill() {
         this.newSkill = this.autocompleteSkills[this.current]
+
+        this.open = false
+      },
+      enter() {
+        if (this.openSuggestion) {
+          this.chooseSkill()
+        } else {
+          this.addSkill()
+        }
       },
       up() {
         if (this.current > 0) {
@@ -77,17 +85,18 @@
       suggestionClick(index) {
         this.open = false
 
-        this.newSkill = this.autocompleteSkills[this.current]
+        this.newSkill = this.autocompleteSkills[index]
       },
       async onInput(value) {
+        if (this.newSkill === value) return
+
         this.newSkill = value
 
         if (value.length < minimumChars) return
 
         let {data} = await this.$http.get(searchUrl, {params: {query: value}})
 
-        this.autocompleteSkills = data
-        console.log(data);
+        this.autocompleteSkills = data || []
 
         if (this.open === false) {
           this.open = true
