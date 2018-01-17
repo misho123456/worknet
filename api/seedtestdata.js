@@ -53,7 +53,17 @@ const libIndex = {
   }
 }
 
+const skillIndex = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
+
 const testUsers = [{
+  'userName': 'test',
   'firstName': 'სახელი',
   'lastName': 'გვარი',
   'personalId': '00000000000',
@@ -402,6 +412,62 @@ const testLibs = [{
   ]
 }]
 
+const testSkills = [
+  { name: 'Auditing' },
+  { name: 'AutoCAD' },
+  { name: 'Automotive' },
+  { name: 'Art' },
+  { name: 'Analytical Skills' },
+  { name: 'Adobe Photoshop' },
+  { name: 'Art Direction' },
+  { name: 'Automation' },
+  { name: 'Adobe Illustrator' },
+  { name: 'Agile Methodologies' },
+  { name: 'Business Analysis' },
+  { name: 'Budgeting' },
+  { name: 'Business Strategy' },
+  { name: 'Business Process Improvement' },
+  { name: 'Business Services' },
+  { name: 'Business Planning' },
+  { name: 'Branding' },
+  { name: 'Business-to-Business (B2B)' },
+  { name: 'Business Intelligence' },
+  { name: 'Business Process' },
+  { name: 'Customer Service' },
+  { name: 'Communication' },
+  { name: 'Company Research' },
+  { name: 'Change Management' },
+  { name: 'Coaching' },
+  { name: 'Construction' },
+  { name: 'Customer Relationship Management (CRM)' },
+  { name: 'Contractual Agreements' },
+  { name: 'Customer Satisfaction' },
+  { name: 'Contract Negotiation' },
+  { name: 'Design' },
+  { name: 'Databases' },
+  { name: 'Data Analysis' },
+  { name: 'Digital Marketing' },
+  { name: 'DES' },
+  { name: 'Decision-Making' },
+  { name: 'Digital Media' },
+  { name: 'Drawing' },
+  { name: 'DOS' },
+  { name: 'Development Tools' },
+  { name: 'Event Planning' },
+  { name: 'Editing' },
+  { name: 'Entrepreneurship' },
+  { name: 'Email' },
+  { name: 'Employee Benefits Design' },
+  { name: 'Energy' },
+  { name: 'Electronics' },
+  { name: 'Enterprise Software' },
+  { name: 'E-commerce' },
+  { name: 'Javascript' },
+  { name: 'CSS' },
+  { name: 'HTML' },
+  { name: 'oop' }
+]
+
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
@@ -418,3 +484,4 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
+seedData(testSkills, 'skill', skillIndex, 'skill', true)

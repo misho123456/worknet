@@ -23,8 +23,8 @@
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
-        <locations :currentLocationName="profileData.factLocationName" :currentLocationUnitName="profileData.factLocationUnitName" @onLocationChanged="onFactLocationChanged"></locations>
-
+        <locations ref="modalLocation" v-if="locationList.length>0" :locations="locationList" :currentLocationName="profileData.factLocationName"
+          :currentLocationUnitName="profileData.factLocationUnitName" @onLocationChanged="onFactLocationChanged"></locations>
         <label>
           <b>მისამართი</b>
         </label>
@@ -51,28 +51,26 @@
 </template>
 <script>
   import locations from './locations'
+  import libs from '../libs'
 
   export default {
     name: 'maininfo',
     data() {
       return {
-        updatedFactLocation: undefined,
-        profileData: {
-          'firstName': 'სახელი',
-          'lastName': 'გვარი',
-          'personalId': '00000000000',
-          'birthDate': '1991-01-11T00:00:00',
-          'genderName': 'მამრობითი',
-          'registrationLocationName': 'აჭარა',
-          'registrationLocationUnitName': 'ბათუმი',
-          'registrationAddressDescription': 'საქართველო, ქალაქი ბათუმი, პეტრე მელიქიშვილის ქუჩა, N 91, ბინა 43',
-          'factLocationName': 'თბილისი',
-          'factLocationUnitName': 'ისანი',
-          'factAddressDescription': 'დიდი დიღომი 2 ნაბიჯთან',
-          'mobileNumber': '591000000',
-          'email': 'TTT@gmail.com',
-          'contactDescription': 'დამატებითი საკონტაქტო ინფორმაცია ბლაბლა'
-        }
+        baseUrl: 'api/users/profile/maininfo',
+        locationList: [], // რეგიონები რაიონები
+        profileData: {}
+      }
+    },
+    async created() {
+      try {
+        const response = await this.$http.get(this.baseUrl)
+        this.profileData = response.data
+        this.locationList = await libs.fetchLocationsOfGeorgia()
+      } catch (error) {
+        // TODO Notify
+        this.locationList = []
+        console.log(error)
       }
     },
     computed: {
@@ -88,19 +86,17 @@
     },
     methods: {
       onFactLocationChanged(location) {
-        this.updatedFactLocation = location
+        this.profileData.factLocationName = location.locationName
+        this.profileData.factLocationUnitName = location.locationUnitName
       },
-      tryToSaveMainInfo() {
-        let updatedData = {
-          locationName: this.profileData.factLocationName,
-          locationUnitName: this.profileData.factLocationUnitName
+      async tryToSaveMainInfo() {
+        // TODO notify
+        try {
+          let response = await this.$http.put(this.baseUrl, this.profileData)
+          console.log(response.data)
+        } catch (error) {
+          console.log(error)
         }
-        if (this.updatedFactLocation !== undefined) {
-          updatedData.locationName = this.updatedFactLocation.locationName
-          updatedData.locationUnitName = this.updatedFactLocation.locationUnitName
-        }
-
-        // TODO call service to save data
       }
     },
     components: { 'locations': locations }

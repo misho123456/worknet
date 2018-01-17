@@ -7,6 +7,28 @@ async function getList() {
   return await userRepository.getUsers()
 }
 
+async function getUserMainInfo(userName) {
+  let user = await userRepository.getMainInfo(userName)
+  return user
+}
+
+async function updateMainInfo(userName, mainInfo) {
+
+  let foundUser = await userRepository.getUserByUserName(userName)
+
+  let userToSave
+
+  if (!foundUser) {
+    throw new RecordError('ჩანაწერი ვერ მოიძებნა')
+  } else {
+    userToSave = Object.assign(foundUser, mainInfo)
+  }
+
+  let result = await userRepository.saveUser(userToSave)
+  return result._id
+
+}
+
 async function getUserProfile(userName) {
   let user = await userRepository.getUserByUserName(userName)
 
@@ -88,6 +110,8 @@ async function activateUserProfile(userName) {
 
 module.exports = {
   getList,
+  getUserMainInfo,
+  updateMainInfo,
   getUserProfile,
   fillUserProfile,
   deactivateUserProfile,
