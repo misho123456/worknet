@@ -14,7 +14,7 @@
             <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
           </b-input-group-button>
         </b-input-group>
-        <b-list-group v-if="openSuggestion">
+        <b-list-group v-if="openSuggestion" class="autocomplete-list">
           <b-list-group-item v-for="(skill, index) in autocompleteSkills" :active="isActive(index)" @click="suggestionClick(index)" :key="skill">
             {{ skill }}
           </b-list-group-item>
@@ -26,8 +26,6 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -137,5 +135,13 @@
 
   .closebtn:hover {
     color: #000;
+  }
+
+  .autocomplete-list {
+    position: absolute;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: scroll;
+    z-index: 10;
   }
 </style>
