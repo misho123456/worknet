@@ -1,26 +1,7 @@
 <template>
   <div>
 
-    <b-card :title="profileTitle">
-      <div>
-        <img src="https://placekitten.com/500/350" alt="seeker" class="rounded-circle profile-picture">
-      </div>
-      <div>
-        <p>
-          <b>დაბადების თარიღი:</b> {{myProfile.birthDate}}</p>
-        <p>
-          <b>რეგისტრაციის მისამართი:</b> {{registrationAddress}}</p>
-        <p>
-          <b>ფაქტიური მისამართი:</b> {{factAddress}}</p>
-        <p>
-          <b>ტელეფონი:</b> {{myProfile.mobileNumber}}</p>
-        <p>
-          <b>ელ-ფოსტა:</b> {{myProfile.email}}</p>
-        <p>
-          <b>დამატებითი საკონტაქტო:</b> {{myProfile.contactDescription}}</p>
-        <b-btn>პირადი ინფორმაციის რედაქტირება</b-btn>
-      </div>
-    </b-card>
+    <maininfo></maininfo>
 
     <b-card title="უნარები">
       <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
@@ -33,7 +14,6 @@
       <b-btn class="right-float">დამატება</b-btn>
       <b-list-group class="right-clear">
         <b-list-group-item v-for="edu in myProfile.educations" :key="keyOfObject(edu)">
-
           <div>
             <p>
               <b>
@@ -86,6 +66,7 @@
 
 <script>
   import skills from './skills'
+  import maininfo from './maininfo'
   import utils from '../utils'
 
   const baseUrl = '/api/users/profile'
@@ -110,15 +91,6 @@
         })
     },
     computed: {
-      profileTitle() {
-        return `${this.myProfile.firstName} ${this.myProfile.lastName} - ${this.myProfile.personalId}`
-      },
-      registrationAddress() {
-        return `${this.myProfile.registrationRegionName} ${this.myProfile.registrationLocationName} - ${this.myProfile.registrationAddressDescription}`
-      },
-      factAddress() {
-        return `${this.myProfile.factRegionName} ${this.myProfile.factLocationName} - ${this.myProfile.factAddressDescription}`
-      },
       skillList() {
         return this.myProfile.skills.map(t => t.skillName)
       }
@@ -158,12 +130,12 @@
         return utils.hashOfString(objString)
       }
     },
-    components: { 'skills': skills }
+    components: { 'skills': skills, 'maininfo': maininfo }
   }
 </script>
 
 
-<style scoped>
+<style>
   p {
     text-align: left;
   }

@@ -62,3 +62,6 @@ dist
 
 # tern configuration file
 .tern-project
+
+# for local development
+development.yaml
