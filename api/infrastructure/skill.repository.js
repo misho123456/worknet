@@ -29,7 +29,7 @@ async function exists(skill) {
     body: {
       query: {
         term: {
-          name: skill
+          'name.keyword': skill
         }
       }
     }
