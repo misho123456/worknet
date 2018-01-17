@@ -4,12 +4,14 @@
       <div style="position:relative">
         <b-input-group v-if="editable">
           <b-form-input type="text"
-          placeholder="მაგ. ანალიტიკოსი"
-          :value="newSkill"
-          @input="onInput"
-          @keydown.enter.native='enter'
-          @keydown.down.native='down'
-          @keydown.up.native='up'></b-form-input>
+            autocomplete="off"
+            placeholder="მაგ. ანალიტიკოსი"
+            :value="newSkill"
+            @input="onInput"
+            @keydown.enter.native='enter'
+            @keydown.down.native='down'
+            @keydown.up.native='up'>
+          </b-form-input>
           <b-input-group-button slot="right">
             <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
           </b-input-group-button>
