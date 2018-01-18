@@ -52,6 +52,10 @@ async function fillUserProfile(userName, profile) {
   await userRepository.saveUser(userToSave)
 }
 
+async function getSkills(userName) {
+  return await userRepository.getSkills(userName)
+}
+
 async function addSkill(userName, skill) {
   let userObject = await userRepository.getUserByUserName(userName)
 
@@ -119,6 +123,7 @@ module.exports = {
   fillUserProfile,
   deactivateUserProfile,
   activateUserProfile,
+  getSkills,
   addSkill,
   removeSkill
 }
