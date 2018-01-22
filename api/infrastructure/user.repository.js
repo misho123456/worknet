@@ -109,6 +109,29 @@ async function getSkills(userName) {
   return result.hits.hits[0]._source.skills
 }
 
+async function getJobExperiences(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'jobExperiences'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.jobExperiences
+}
+
 async function getUserByUserName(userName) {
   let options = {
     index,
@@ -147,5 +170,6 @@ module.exports = {
   updateMainInfo,
   getUserByUserName,
   saveUser,
-  getSkills
+  getSkills,
+  getJobExperiences
 }

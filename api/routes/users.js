@@ -83,6 +83,18 @@ router.delete('/profile/skills/:skillName', async (req, res, next) => {
   }
 })
 
+router.get('/profile/experiences', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getJobExperiences(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.post('/profile/deactivation', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 

@@ -94,6 +94,10 @@ async function removeSkill(userName, skill) {
   return await userRepository.saveUser(user)
 }
 
+async function getJobExperiences(userName) {
+  return await userRepository.getJobExperiences(userName)
+}
+
 async function deactivateUserProfile(userName) {
   let foundUser = await userRepository.getUserByUserName(userName)
 
@@ -125,5 +129,6 @@ module.exports = {
   activateUserProfile,
   getSkills,
   addSkill,
-  removeSkill
+  removeSkill,
+  getJobExperiences
 }
