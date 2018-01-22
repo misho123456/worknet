@@ -4,10 +4,13 @@ const skillInteractor = require('../interactors/skill.interactor')
 
 const baseUrl = '/api/skills'
 
-router.get('/search', function(req, res, next) {
-  skillInteractor.search(req.query.query)
-    .then(res.send.bind(res))
-    .catch(next)
+router.get('/search', async (req, res, next) => {
+  try {
+    let result = await skillInteractor.search(req.query.query)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
 })
 
 module.exports = {

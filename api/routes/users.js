@@ -61,28 +61,26 @@ router.get('/profile/skills', async (req, res, next) => {
   }
 })
 
-router.post('/profile/skills', (req, res, next) => {
+router.post('/profile/skills', async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
-  userInteractor.addSkill(userName, req.body.skillName)
-    .then(() => {
-      res.send({
-        success: true
-      })
-    })
-    .catch(next)
+  try {
+    await userInteractor.addSkill(userName, req.body.skillName)
+    next({})
+  } catch (error) {
+    next({error})
+  }
 })
 
-router.delete('/profile/skills/:skillName', (req, res, next) => {
+router.delete('/profile/skills/:skillName', async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
-  userInteractor.removeSkill(userName, req.params.skillName)
-    .then(() => {
-      res.send({
-        success: true
-      })
-    })
-    .catch(next)
+  try {
+    await userInteractor.removeSkill(userName, req.params.skillName)
+    next({})
+  } catch (error) {
+    next({error})
+  }
 })
 
 router.post('/profile/deactivation', (req, res, next) => {
