@@ -28,7 +28,6 @@ export default {
     } catch (error) {
       bus.$emit('error', error)
     }
-
   },
   methods: {
     async onAddNewSkill(skill) {
