@@ -3,9 +3,7 @@
 
     <maininfo></maininfo>
 
-    <b-card title="უნარები">
-      <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
-    </b-card>
+    <profile-skills></profile-skills>
 
     <b-card title="განათლება">
       <p>
@@ -65,8 +63,8 @@
 </template>
 
 <script>
-  import skills from '../common/skills'
   import maininfo from './maininfo'
+  import profileSkills from './profile-skills'
   import utils from '../../utils'
 
   const baseUrl = '/api/users/profile'
@@ -79,9 +77,7 @@
     data() {
       return {
         msg: 'profile page',
-        myProfile: {
-          skills: []
-        }
+        myProfile: {}
       }
     },
     created() {
@@ -90,47 +86,16 @@
           this.myProfile = response.data
         })
     },
-    computed: {
-      skillList() {
-        return this.myProfile.skills.map(t => t.skillName)
-      }
-    },
     methods: {
-      onAddNewSkill(skill) {
-        let indexOfSkill = this.myProfile.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
-        if (indexOfSkill !== -1) {
-          // TODO alert or notify
-          console.log('this skill already exists')
-          return
-        }
-        let skillObject = { skillName: skill }
-        this.$http.post(baseUrl + '/skills', skillObject, {headers})
-          .then(() => {
-            this.myProfile.skills.push(skillObject)
-            this.$refs.skillInput.clear()
-          })
-      },
-      onRemoveSkill(skill) {
-        let indexOfSkill = this.myProfile.skills.findIndex(t => t.skillName === skill)
-        if (indexOfSkill === -1) {
-          // TODO alert or notify
-          console.log('can\'t find index of skill')
-          return
-        }
-
-        const url = baseUrl + `/skills/${skill}`
-
-        this.$http.delete(url, {headers})
-          .then(() => {
-            this.myProfile.skills.splice(indexOfSkill, 1)
-          })
-      },
       keyOfObject(obj) {
         let objString = JSON.stringify(obj)
         return utils.hashOfString(objString)
       }
     },
-    components: { 'skills': skills, 'maininfo': maininfo }
+    components: {
+      'maininfo': maininfo,
+      'profile-skills': profileSkills
+    }
   }
 </script>
 

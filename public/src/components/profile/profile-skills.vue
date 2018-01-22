@@ -1,0 +1,85 @@
+<template>
+<div class="profile-skills">
+  <b-card title="უნარები">
+    <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
+  </b-card>
+</div>
+</template>
+
+<script>
+import skills from '../common/skills'
+import { bus } from '../common/bus'
+
+const baseUrl = '/api/users/profile/skills'
+const headers = {
+  username: 'test'
+} // temporary headers until um is written
+
+export default {
+  name: 'profile-skills',
+  data: () => ({
+    skills: []
+  }),
+  async created() {
+    let response = await this.$http.get(baseUrl, {headers})
+
+    this.skills = response.data
+  },
+  methods: {
+    async onAddNewSkill(skill) {
+      let indexOfSkill = this.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
+      if (indexOfSkill !== -1) {
+        // TODO alert or notify
+        console.log('this skill already exists')
+        return
+      }
+
+      let skillObject = {
+        skillName: skill
+      }
+
+      try {
+        await this.$http.post(baseUrl, skillObject, {
+          headers
+        })
+
+        this.skills.push(skillObject)
+        this.$refs.skillInput.clear()
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    },
+    async onRemoveSkill(skill) {
+      let indexOfSkill = this.skills.findIndex(t => t.skillName === skill)
+      if (indexOfSkill === -1) {
+        // TODO alert or notify
+        console.log('can\'t find index of skill')
+        return
+      }
+
+      try {
+        const url = baseUrl + `/${skill}`
+
+        await this.$http.delete(url, {
+          headers
+        })
+
+        this.skills.splice(indexOfSkill, 1)
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    }
+  },
+  computed: {
+    skillList() {
+      return this.skills.map(item => item.skillName)
+    }
+  },
+  components: {
+    skills
+  }
+}
+</script>
+
+<style scoped>
+</style>
