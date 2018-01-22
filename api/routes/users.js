@@ -10,7 +10,6 @@ router.get('/profile/maininfo', async (req, res, next) => {
     let userName = 'test'
     let result = await userInteractor.getUserMainInfo(userName)
     next({ result })
-    res.send(result)
   } catch (error) {
     next({ error })
   }
@@ -27,11 +26,11 @@ router.put('/profile/maininfo', async (req, res, next) => {
   }
 })
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   userInteractor.getList().then(res.send.bind(res)).catch(next)
 })
 
-router.get('/profile', function (req, res, next) {
+router.get('/profile', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.getUserProfile(userName)
@@ -39,11 +38,11 @@ router.get('/profile', function (req, res, next) {
     .catch(next)
 })
 
-router.post('/profile', function (req, res, next) {
+router.post('/profile', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.fillUserProfile(userName, req.body)
-    .then(function () {
+    .then(() => {
       res.send({
         success: true
       })
@@ -51,11 +50,22 @@ router.post('/profile', function (req, res, next) {
     .catch(next)
 })
 
-router.post('/profile/skills', function (req, res, next) {
+router.get('/profile/skills', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getSkills(userName)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/skills', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.addSkill(userName, req.body.skillName)
-    .then(function () {
+    .then(() => {
       res.send({
         success: true
       })
@@ -63,11 +73,11 @@ router.post('/profile/skills', function (req, res, next) {
     .catch(next)
 })
 
-router.delete('/profile/skills/:skillName', function (req, res, next) {
+router.delete('/profile/skills/:skillName', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.removeSkill(userName, req.params.skillName)
-    .then(function () {
+    .then(() => {
       res.send({
         success: true
       })
@@ -75,11 +85,11 @@ router.delete('/profile/skills/:skillName', function (req, res, next) {
     .catch(next)
 })
 
-router.post('/profile/deactivation', function (req, res, next) {
+router.post('/profile/deactivation', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.deactivateUserProfile(userName)
-    .then(function () {
+    .then(() => {
       res.send({
         success: true
       })
@@ -87,11 +97,11 @@ router.post('/profile/deactivation', function (req, res, next) {
     .catch(next)
 })
 
-router.post('/profile/activation', function (req, res, next) {
+router.post('/profile/activation', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.activateUserProfile(userName)
-    .then(function () {
+    .then(() => {
       res.send({
         success: true
       })
