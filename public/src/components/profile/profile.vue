@@ -33,30 +33,7 @@
     </b-card>
 
 
-    <b-card title="გამოცდილება">
-      <b-btn class="right-float">დამატება</b-btn>
-      <b-list-group class="right-clear">
-        <b-list-group-item v-for="experience in myProfile.jobExperiences" :key="keyOfObject(experience)">
-
-          <div>
-            <p>
-              <b>
-                {{experience.jobTitle}}:
-              </b>
-              {{experience.organization}} [{{experience.locationName}}, {{experience.locationUnitName}}]
-            </p>
-            <p>
-              <b>პერიოდი: </b>{{experience.startMonth}}/{{experience.startYear}} - {{experience.endMonth}}/{{experience.endYear}}
-            </p>
-
-          </div>
-          <div class="right-float">
-            <b-btn>რედაქტირება</b-btn>
-            <b-btn>წაშლა</b-btn>
-          </div>
-        </b-list-group-item>
-      </b-list-group>
-    </b-card>
+    <experiences></experiences>
 
   </div>
 
@@ -66,6 +43,7 @@
   import maininfo from './maininfo'
   import profileSkills from './profile-skills'
   import utils from '../../utils'
+  import experiences from './experiences'
 
   const baseUrl = '/api/users/profile'
   const headers = {
@@ -94,7 +72,8 @@
     },
     components: {
       'maininfo': maininfo,
-      'profile-skills': profileSkills
+      'profile-skills': profileSkills,
+      'experiences': experiences
     }
   }
 </script>
