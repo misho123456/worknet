@@ -21,16 +21,21 @@ export default {
     skills: []
   }),
   async created() {
-    let response = await this.$http.get(baseUrl, {headers})
+    try {
+      let response = await this.$http.get(baseUrl, {headers})
 
-    this.skills = response.data
+      this.skills = response.data
+    } catch (error) {
+      bus.$emit('error', error)
+    }
+
   },
   methods: {
     async onAddNewSkill(skill) {
       let indexOfSkill = this.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
       if (indexOfSkill !== -1) {
         // TODO alert or notify
-        console.log('this skill already exists')
+        console.error('this skill already exists')
         return
       }
 
@@ -53,7 +58,7 @@ export default {
       let indexOfSkill = this.skills.findIndex(t => t.skillName === skill)
       if (indexOfSkill === -1) {
         // TODO alert or notify
-        console.log('can\'t find index of skill')
+        console.error('can\'t find index of skill')
         return
       }
 
