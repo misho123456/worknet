@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" v-if="dismissCountDown">
     <h2></h2>
     <b-alert :show="dismissCountDown" dismissible :variant="notificationType" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
       <p>{{notification}} - {{dismissCountDown}}</p>
