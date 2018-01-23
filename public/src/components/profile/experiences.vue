@@ -86,11 +86,13 @@ export default {
   name: 'experiences',
   data: () => ({
     experiences: [],
-    currentExperience: {startMonth: null, startYear: null},
+    currentExperience: {},
     workNow: true,
     locationList: []
   }),
   async created() {
+    this.currentExperience = this.experienceStartState()
+
     let response = await this.$http.get(baseUrl, {
       headers
     })
@@ -100,6 +102,14 @@ export default {
     this.locationList = await libs.fetchLocationsOfGeorgia()
   },
   methods: {
+    experienceStartState() {
+      return {
+        startMonth: null,
+        startYear: null,
+        endMonth: null,
+        endYear: null
+      }
+    },
     keyOfObject(obj) {
       let objString = JSON.stringify(obj)
       return utils.hashOfString(objString)
@@ -138,7 +148,7 @@ export default {
       console.log(this.currentExperience)
     },
     cancel() {
-      this.currentExperience = {startMonth: null, startYear: null}
+      this.currentExperience = this.experienceStartState()
     }
   },
   components: {
