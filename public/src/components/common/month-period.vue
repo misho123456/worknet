@@ -45,7 +45,10 @@ export default {
     this.yearOptions = new Array(currentYear - this.minYear + 1).fill(0)
       .map((item, index) => currentYear - index)
 
-    if (this.value) this.currentPeriod = this.value
+    this.currentPeriod = {
+      month: this.month,
+      year: this.year
+    }
   },
   methods: {
     onMonthInput(value) {
