@@ -8,6 +8,8 @@
             {{monthOption}}
           </option>
         </b-form-select>
+      </b-col>
+      <b-col>
         <b-form-select :value="year" @input="onYearInput" v-model="year" class="mb-3">
           <option v-for="yearOption in yearOptions">{{yearOption}}</option>
         </b-form-select>
@@ -49,7 +51,7 @@ export default {
       this.month = value
 
       this.$emit('month', value)
-    }
+    },
     onYearInput(value) {
       this.year = value
 
