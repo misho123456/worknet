@@ -3,14 +3,14 @@
   <b-container>
     <b-row>
       <b-col>
-        <b-form-select :value="month" @input="onMonthInput" class="mb-3">
+        <b-form-select :value="month" @change="onMonthInput" class="mb-3">
           <option v-for="monthOption in monthOptions">
             {{monthOption}}
           </option>
         </b-form-select>
       </b-col>
       <b-col>
-        <b-form-select :value="year" @input="onYearInput" class="mb-3">
+        <b-form-select :value="year" @change="onYearInput" class="mb-3">
           <option v-for="yearOption in yearOptions">{{yearOption}}</option>
         </b-form-select>
       </b-col>
@@ -43,6 +43,9 @@ export default {
 
     this.yearOptions = new Array(currentYear - this.minYear + 1).fill(0)
       .map((item, index) => currentYear - index)
+  },
+  beforeUpdate() {
+    console.log('period', this.month, this.year)
   },
   methods: {
     onMonthInput(value) {
