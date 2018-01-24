@@ -125,10 +125,10 @@ export default {
       this.currentExperience = Object.assign(this.currentExperience, {startYear: value})
     },
     onEndMonthChange(value) {
-      this.currentExperience.endMonth = value
+      this.currentExperience = Object.assign(this.currentExperience, {endMonth: value})
     },
     onEndYearChange(value) {
-      this.currentExperience.endYear = value
+      this.currentExperience = Object.assign(this.currentExperience, {endYear: value})
     },
     show(experience) {
       this.currentExperience = Object.assign({}, experience)

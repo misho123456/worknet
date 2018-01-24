@@ -44,9 +44,6 @@ export default {
     this.yearOptions = new Array(currentYear - this.minYear + 1).fill(0)
       .map((item, index) => currentYear - index)
   },
-  beforeUpdate() {
-    console.log('period', this.month, this.year)
-  },
   methods: {
     onMonthInput(value) {
       this.$emit('month', Number(value))
