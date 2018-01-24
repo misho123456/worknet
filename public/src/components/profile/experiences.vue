@@ -1,7 +1,7 @@
 <template>
 <div class="experiences">
   <b-card title="გამოცდილება">
-    <b-btn class="right-float" @click="show()">დამატება</b-btn>
+    <b-btn class="right-float" @click="show(currentExperience)">დამატება</b-btn>
     <b-list-group class="right-clear">
       <b-list-group-item v-for="experience in experiences" :key="experience.jobTitle">
 
@@ -25,7 +25,7 @@
   </b-card>
 
   <div class="experience-modal">
-    <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @cancel="cancel">
+    <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="cancel">
       <b-form-group label="პოზიცია">
         <b-form-input v-model="currentExperience.jobTitle" type="text"></b-form-input>
       </b-form-group>
@@ -39,7 +39,12 @@
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
-        <locations ref="modalLocation" v-if="locationList.length>0" :locations="locationList" :currentLocationName="currentExperience.locationName" :currentLocationUnitName="currentExperience.locationUnitName" @onLocationChanged="onLocationChanged"></locations>
+        <locations v-if="locationList.length>0"
+            :locations="locationList"
+            :currentLocationName="currentExperience.locationName"
+            :currentLocationUnitName="currentExperience.locationUnitName"
+            @onLocationChanged="onLocationChanged">
+        </locations>
         <b-form-group label="მისამართი">
           <b-form-input v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
         </b-form-group>
@@ -107,7 +112,10 @@ export default {
         startMonth: null,
         startYear: null,
         endMonth: null,
-        endYear: null
+        endYear: null,
+        locationIsInGeorgia: true,
+        locationName: null,
+        locationUnitName: null
       }
     },
     keyOfObject(obj) {
