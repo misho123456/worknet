@@ -142,8 +142,9 @@ async function saveJobExperiences(userName, experiences) {
           userName: userName
         }
       },
-      doc: {
-        jobExperiences: experiences
+      script: {
+        source: 'ctx._source.jobExperiences = params.experiences',
+        params: { experiences }
       }
     }
   }
