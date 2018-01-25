@@ -95,6 +95,42 @@ router.get('/profile/experiences', async (req, res, next) => {
   }
 })
 
+router.post('/profile/experiences', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.addJobExperience(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.put('/profile/experiences/:id', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.replaceJobExperience(userName, req.params.id, req.body)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/experiences/:id', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.deleteJobExperience(userName, req.params.id)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.post('/profile/deactivation', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 

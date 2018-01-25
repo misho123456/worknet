@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
 const factory = require('../domain/factory')
@@ -119,6 +120,40 @@ async function activateUserProfile(userName) {
   await userRepository.saveUser(foundUser)
 }
 
+async function addJobExperience(userName, experience) {
+  experience.id = shortid.generate()
+
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  experiences.push(experience)
+
+  await userRepository.saveJobExperiences(userName, experiences)
+
+  return experience.id
+}
+
+async function replaceJobExperience(userName, id, experience) {
+  if (!experience.id) experience.id = id
+
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  let index = experiences.findIndex(item => item.id === experience.id)
+
+  experiences[index] = experience
+
+  await userRepository.saveJobExperiences(userName, experiences)
+}
+
+async function deleteJobExperience(userName, id) {
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  let index = experiences.findIndex(item => item.id === id)
+
+  experiences.splice(index, 1)
+
+  await userRepository.saveJobExperiences(userName, experiences)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -130,5 +165,8 @@ module.exports = {
   getSkills,
   addSkill,
   removeSkill,
-  getJobExperiences
+  getJobExperiences,
+  addJobExperience,
+  replaceJobExperience,
+  deleteJobExperience
 }
