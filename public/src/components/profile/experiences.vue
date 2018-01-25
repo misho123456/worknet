@@ -3,7 +3,7 @@
   <b-card title="გამოცდილება">
     <b-btn class="right-float" @click="show(currentExperience)">დამატება</b-btn>
     <b-list-group class="right-clear">
-      <b-list-group-item v-for="experience in experiences" :key="experience.jobTitle">
+      <b-list-group-item v-for="experience in experiences" :key="experience.id">
 
         <div>
           <p>
@@ -18,7 +18,7 @@
         </div>
         <div class="right-float">
           <b-btn @click="show(experience)">რედაქტირება</b-btn>
-          <b-btn>წაშლა</b-btn>
+          <b-btn @click="deleteExperience(experience.id)">წაშლა</b-btn>
         </div>
       </b-list-group-item>
     </b-list-group>
@@ -93,7 +93,8 @@ export default {
     experiences: [],
     currentExperience: {},
     workNow: true,
-    locationList: []
+    locationList: [],
+    experienceToSubmit: {}
   }),
   async created() {
     this.currentExperience = this.experienceStartState()
@@ -153,10 +154,45 @@ export default {
       this.$refs.experienceModal.hide()
     },
     submit() {
-      console.log(this.currentExperience)
+      this.experienceToSubmit = this.currentExperience
+
+      if (this.experienceToSubmit.id) {
+        return this.editExperience()
+      }
+
+      this.addExperience()
     },
     cancel() {
       this.currentExperience = this.experienceStartState()
+    },
+    async addExperience() {
+      let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers})
+
+      this.experienceToSubmit.id = response.data
+
+      this.experiences.push(this.experienceToSubmit)
+
+      this.experienceToSubmit = {}
+    },
+    async editExperience() {
+      let url = baseUrl + '/' + this.experienceToSubmit.id
+
+      await this.$http.put(url, this.experienceToSubmit, {headers})
+
+      let expToEdit = this.experiences.find(item => item.id === this.experienceToSubmit.id)
+
+      Object.assign(expToEdit, this.experienceToSubmit)
+
+      this.experienceToSubmit = {}
+    },
+    async deleteExperience(id) {
+      let url = baseUrl + '/' + id
+
+      await this.$http.delete(url, {headers})
+
+      let index = this.experiences.findIndex(item => item.id === id)
+
+      this.experiences.splice(index, 1)
     }
   },
   components: {
@@ -192,5 +228,9 @@ p {
 
 .list-group-item {
   border-bottom: solid darkseagreen;
+}
+
+#H1_AjDwHf {
+  background-color: red;
 }
 </style>
