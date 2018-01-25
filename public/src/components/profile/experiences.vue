@@ -25,7 +25,7 @@
   </b-card>
 
   <div class="experience-modal">
-    <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="cancel">
+    <b-modal ref="experienceModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="პოზიცია">
         <b-form-input v-model="currentExperience.jobTitle" type="text"></b-form-input>
       </b-form-group>
@@ -162,7 +162,7 @@ export default {
 
       this.addExperience()
     },
-    cancel() {
+    onHide() {
       this.currentExperience = this.experienceStartState()
     },
     async addExperience() {
