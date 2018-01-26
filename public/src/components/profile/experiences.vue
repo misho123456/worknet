@@ -9,7 +9,10 @@
           <p>
             <b>
                 {{experience.jobTitle}}:
-              </b> {{experience.organization}} [{{experience.locationName}}, {{experience.locationUnitName}}]
+              </b> {{experience.organization}}
+              <span v-if="experience.locationName">
+                [{{experience.locationName}}, {{experience.locationUnitName}}]
+              </span>
           </p>
           <p>
             <b>პერიოდი: </b>
