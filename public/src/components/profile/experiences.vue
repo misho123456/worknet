@@ -79,6 +79,9 @@
                   @year="onEndYearChange">
                 </month-period>
               </div>
+              <div class="period-present-text" v-else>
+                დღემდე
+              </div>
             </b-col>
           </b-row>
 
@@ -249,7 +252,8 @@ p {
   border-bottom: solid darkseagreen;
 }
 
-#H1_AjDwHf {
-  background-color: red;
+.period-present-text {
+  padding-top: 24px;
+  margin-top: 24px;
 }
 </style>
