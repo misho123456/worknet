@@ -1,8 +1,8 @@
 <template>
 <div class="month-period">
   <b-container>
-    <b-row>
-      <b-col>
+    <b-row no-gutters>
+      <b-col cols="5">
         <label>თვე</label>
         <b-form-select :value="month" @change="onMonthInput" class="mb-3">
           <option v-for="monthOption in monthOptions">
@@ -10,7 +10,7 @@
           </option>
         </b-form-select>
       </b-col>
-      <b-col>
+      <b-col cols="7">
         <label>წელი</label>
         <b-form-select :value="year" @change="onYearInput" class="mb-3">
           <option v-for="yearOption in yearOptions">{{yearOption}}</option>
