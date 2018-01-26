@@ -4,7 +4,7 @@
     <b-row no-gutters>
       <b-col cols="5">
         <label>თვე</label>
-        <b-form-select :value="month" @change="onMonthInput" class="mb-3">
+        <b-form-select :value="month" @change="onMonthInput" class="mb-3 month">
           <option v-for="monthOption in monthOptions">
             {{monthOption}}
           </option>
@@ -12,7 +12,7 @@
       </b-col>
       <b-col cols="7">
         <label>წელი</label>
-        <b-form-select :value="year" @change="onYearInput" class="mb-3">
+        <b-form-select :value="year" @change="onYearInput" class="mb-3 year">
           <option v-for="yearOption in yearOptions">{{yearOption}}</option>
         </b-form-select>
       </b-col>
@@ -58,4 +58,13 @@ export default {
 </script>
 
 <style scoped>
+.month {
+  min-width: 3.75rem;
+  /* padding-left: 2vw; */
+}
+
+.year {
+  min-width: 5rem;
+  /* padding-left: 2vw; */
+}
 </style>
