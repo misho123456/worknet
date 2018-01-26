@@ -55,39 +55,35 @@
           <b-form-input v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
         </b-form-group>
       </div>
-      <div class="periods">
-        <b-container>
-          <b-row>
-            <b-col>
-              <div class="monthPeriod">
-                  <label>დასაწყისი</label>
-                  <month-period
-                    :month="currentExperience.startMonth"
-                    :year="currentExperience.startYear"
-                    @month="onStartMonthChange"
-                    @year="onStartYearChange">
-                  </month-period>
-              </div>
-            </b-col>
-            <b-col>
-              <div class="monthPeriod" v-if="!workNow">
-                <label>დასასრული</label>
+      <b-container class="periods">
+        <b-row no-gutters>
+          <b-col>
+            <div class="monthPeriod">
+                <label>დასაწყისი</label>
                 <month-period
-                  :month="currentExperience.endMonth"
-                  :year="currentExperience.endYear"
-                  @month="onEndMonthChange"
-                  @year="onEndYearChange">
+                  :month="currentExperience.startMonth"
+                  :year="currentExperience.startYear"
+                  @month="onStartMonthChange"
+                  @year="onStartYearChange">
                 </month-period>
-              </div>
-              <div class="period-present-text" v-else>
-                დღემდე
-              </div>
-            </b-col>
-          </b-row>
-
-
-        </b-container>
-      </div>
+            </div>
+          </b-col>
+          <b-col>
+            <div class="monthPeriod" v-if="!workNow">
+              <label>დასასრული</label>
+              <month-period
+                :month="currentExperience.endMonth"
+                :year="currentExperience.endYear"
+                @month="onEndMonthChange"
+                @year="onEndYearChange">
+              </month-period>
+            </div>
+            <div class="period-present-text" v-else>
+              დღემდე
+            </div>
+          </b-col>
+        </b-row>
+      </b-container>
 
       <b-form-checkbox v-model="workNow">
         ახლაც აქ ვმუშაობ
