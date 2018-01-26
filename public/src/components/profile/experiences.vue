@@ -12,7 +12,10 @@
               </b> {{experience.organization}} [{{experience.locationName}}, {{experience.locationUnitName}}]
           </p>
           <p>
-            <b>პერიოდი: </b>{{experience.startMonth}}/{{experience.startYear}} - {{experience.endMonth}}/{{experience.endYear}}
+            <b>პერიოდი: </b>
+            {{experience.startMonth}}/{{experience.startYear}} -
+            <span v-if="experience.endYear && experience.endMonth">{{experience.endMonth}}/{{experience.endYear}}</span>
+            <span v-else>დღემდე</span>
           </p>
 
         </div>
