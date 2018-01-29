@@ -47,15 +47,29 @@
       this.selectedLocationName = this.currentLocationName
       this.selectedLocationUnitName = this.currentLocationUnitName
     },
+    watch: {
+      currentLocationName(value) {
+        // let tempLocationUnitName = this.selectedLocationUnitName
+        this.selectedLocationName = value
+        this.locationChanged(value)
+        // this.selectedLocationUnitName = tempLocationUnitName
+        this.selectedLocationUnitName = null
+        console.log('location changed')
+      },
+      currentLocationUnitName(value) {
+        this.selectedLocationUnitName = value
+      }
+    },
     methods: {
       locationChanged(locationName) {
-        this.selectedLocationUnitName = null
+        // this.selectedLocationUnitName = null
         let location = this.locations.find(t => t.locationName === locationName)
         if (location === undefined) {
           this.selectedLocation = {}
           return
         }
         this.selectedLocation = location
+        // this.selectedLocationUnitName = null
       },
       locationUnitChanged(unitName) {
         this.$emit('onLocationChanged', {

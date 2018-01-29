@@ -1,8 +1,10 @@
 const _ = require('lodash')
+const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
+const domainUtils = require('../domain/domainUtils')
 
 async function getList() {
   return await userRepository.getUsers()
@@ -94,6 +96,10 @@ async function removeSkill(userName, skill) {
   return await userRepository.saveUser(user)
 }
 
+async function getJobExperiences(userName) {
+  return await userRepository.getJobExperiences(userName)
+}
+
 async function deactivateUserProfile(userName) {
   let foundUser = await userRepository.getUserByUserName(userName)
 
@@ -115,6 +121,54 @@ async function activateUserProfile(userName) {
   await userRepository.saveUser(foundUser)
 }
 
+async function addJobExperience(userName, experience) {
+  domainUtils.validatePeriod(
+    experience.startMonth,
+    experience.startYear,
+    experience.endMonth,
+    experience.endYear
+  )
+
+  experience.id = shortid.generate()
+
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  experiences.push(experience)
+
+  await userRepository.saveJobExperiences(userName, experiences)
+
+  return experience.id
+}
+
+async function replaceJobExperience(userName, id, experience) {
+  if (!experience.id) experience.id = id
+
+  domainUtils.validatePeriod(
+    experience.startMonth,
+    experience.startYear,
+    experience.endMonth,
+    experience.endYear
+  )
+
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  let index = experiences.findIndex(item => item.id === experience.id)
+
+  experiences[index] = experience
+
+  await userRepository.saveJobExperiences(userName, experiences)
+}
+
+async function deleteJobExperience(userName, id) {
+  let experiences = await userRepository.getJobExperiences(userName)
+
+  let index = experiences.findIndex(item => item.id === id)
+
+  experiences.splice(index, 1)
+
+  await userRepository.saveJobExperiences(userName, experiences)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -125,5 +179,9 @@ module.exports = {
   activateUserProfile,
   getSkills,
   addSkill,
-  removeSkill
+  removeSkill,
+  getJobExperiences,
+  addJobExperience,
+  replaceJobExperience,
+  deleteJobExperience
 }

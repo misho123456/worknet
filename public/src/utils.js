@@ -13,6 +13,12 @@ const hashCode = (str) => {
   }
   return hash
 }
+
+function isNullOrUndefined(value) {
+  return value === null || value === undefined
+}
+
 export default {
-  hashOfString: hashCode
+  hashOfString: hashCode,
+  isNullOrUndefined
 }

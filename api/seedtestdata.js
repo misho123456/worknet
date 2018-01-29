@@ -3,6 +3,7 @@ var client = new elasticsearch.Client({
   host: 'localhost:9200',
   log: 'error'
 })
+const shortid = require('shortid')
 
 async function createIndex(name, option) {
   await client.indices.create({
@@ -128,6 +129,7 @@ const testUsers = [{
   ],
   'jobExperiences': [
     {
+      'id': shortid.generate(),
       'jobTitle': 'js developer',
       'organization': 'შ.პ.ს. დელფოს გრუპი',
       'description': 'სრული და ვრცეეელი  აღწერა',
@@ -142,6 +144,7 @@ const testUsers = [{
       'hasDocument': true
     },
     {
+      'id': shortid.generate(),
       'jobTitle': 'მცხობელი მზარეული',
       'organization': 'შ.პ.ს. მაქს-ფუდი',
       'locationIsInGeorgia': false,
