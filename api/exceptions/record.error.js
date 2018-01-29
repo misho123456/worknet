@@ -1,10 +1,11 @@
 class RecordError extends Error {
-  constructor(message) {
+  constructor(message, statusCode) {
     super(message)
     Error.captureStackTrace(this, this.constructor)
 
     this.name = 'RecordError'
     this.message = message
+    this.statusCode = statusCode || 400
   }
 }
 

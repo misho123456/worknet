@@ -4,6 +4,7 @@ const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
+const domainUtils = require('../domain/domainUtils')
 
 async function getList() {
   return await userRepository.getUsers()
@@ -121,6 +122,13 @@ async function activateUserProfile(userName) {
 }
 
 async function addJobExperience(userName, experience) {
+  domainUtils.validatePeriod(
+    experience.startMonth,
+    experience.startYear,
+    experience.endMonth,
+    experience.endYear
+  )
+
   experience.id = shortid.generate()
 
   let experiences = await userRepository.getJobExperiences(userName)
@@ -134,6 +142,13 @@ async function addJobExperience(userName, experience) {
 
 async function replaceJobExperience(userName, id, experience) {
   if (!experience.id) experience.id = id
+
+  domainUtils.validatePeriod(
+    experience.startMonth,
+    experience.startYear,
+    experience.endMonth,
+    experience.endYear
+  )
 
   let experiences = await userRepository.getJobExperiences(userName)
 
