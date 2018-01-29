@@ -60,11 +60,9 @@ export default {
 <style scoped>
 .month {
   min-width: 3.75rem;
-  /* padding-left: 2vw; */
 }
 
 .year {
   min-width: 5rem;
-  /* padding-left: 2vw; */
 }
 </style>
