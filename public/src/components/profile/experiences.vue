@@ -249,7 +249,7 @@ p {
 }
 
 .period-present-text {
-  padding-top: 24px;
-  margin-top: 24px;
+  padding-top: 1.375rem;
+  margin-top: 3rem;
 }
 </style>
