@@ -99,6 +99,7 @@ import locations from '../common/locations'
 import monthPeriod from '../common/month-period'
 import utils from '../../utils'
 import libs from '../../libs'
+import { bus } from '../common/bus'
 
 const baseUrl = '/api/users/profile/experiences'
 const headers = {
@@ -184,33 +185,51 @@ export default {
       this.currentExperience = this.experienceStartState()
     },
     async addExperience() {
-      let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers})
+      try {
+        let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers})
 
-      this.experienceToSubmit.id = response.data
+        this.experienceToSubmit.id = response.data
 
-      this.experiences.push(this.experienceToSubmit)
+        this.experiences.push(this.experienceToSubmit)
 
-      this.experienceToSubmit = {}
+        this.experienceToSubmit = {}
+
+        bus.$emit('success', 'გამოცდილება წარმატებით დაემატა')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     },
     async editExperience() {
-      let url = baseUrl + '/' + this.experienceToSubmit.id
+      try {
+        let url = baseUrl + '/' + this.experienceToSubmit.id
 
-      await this.$http.put(url, this.experienceToSubmit, {headers})
+        await this.$http.put(url, this.experienceToSubmit, {headers})
 
-      let expToEdit = this.experiences.find(item => item.id === this.experienceToSubmit.id)
+        let expToEdit = this.experiences.find(item => item.id === this.experienceToSubmit.id)
 
-      Object.assign(expToEdit, this.experienceToSubmit)
+        Object.assign(expToEdit, this.experienceToSubmit)
 
-      this.experienceToSubmit = {}
+        this.experienceToSubmit = {}
+
+        bus.$emit('success', 'გამოცდილება წარმატებით დარედაქტირდა')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     },
     async deleteExperience(id) {
-      let url = baseUrl + '/' + id
+      try {
+        let url = baseUrl + '/' + id
 
-      await this.$http.delete(url, {headers})
+        await this.$http.delete(url, {headers})
 
-      let index = this.experiences.findIndex(item => item.id === id)
+        let index = this.experiences.findIndex(item => item.id === id)
 
-      this.experiences.splice(index, 1)
+        this.experiences.splice(index, 1)
+
+        bus.$emit('success', 'გამოცდილება წარმატებით წაიშალა')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     }
   },
   components: {
