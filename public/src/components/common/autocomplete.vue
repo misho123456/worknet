@@ -69,6 +69,12 @@ export default {
       this.$emit('input', this.inputValue)
     },
     enter() {
+      if (!this.openSuggestion) {
+        this.$emit('enter', this.inputValue)
+
+        return
+      }
+
       this.open = false
 
       this.inputValue = this.list[this.current]
