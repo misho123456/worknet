@@ -1,9 +1,9 @@
 <template>
-  <div class="autocomplete">
-    <slot name="input" :onInput="onInput"
-      @keydown.enter.native='enter'
-      @keydown.down.native='down'
-      @keydown.up.native='up'>
+  <div class="autocomplete"
+    @keydown.enter='enter'
+    @keydown.down='down'
+    @keydown.up='up'>
+    <slot name="input" :onInput="onInput" :inputValue="inputValue">
       <b-form-input type="text" autocomplete="off"
         :value="inputValue"
         @input="onInput">
@@ -37,6 +37,8 @@ export default {
   }),
   methods: {
     onInput(value) {
+      if (value === this.inputValue) return
+
       this.inputValue = value
 
       this.$emit('input', this.inputValue)
@@ -67,7 +69,7 @@ export default {
       this.$emit('input', this.inputValue)
     },
     enter() {
-      this.opne = false
+      this.open = false
 
       this.inputValue = this.list[this.current]
 
