@@ -10,7 +10,7 @@
       </b-form-input>
     </slot>
     <b-list-group v-if="openSuggestion" class="autocomplete-list">
-      <b-list-group-item v-for="(item, index) in autocompleteSkills" :active="isActive(index)" @click="suggestionClick(index)" :key="item">
+      <b-list-group-item v-for="(item, index) in list" :active="isActive(index)" @click="suggestionClick(index)" :key="item">
         <slot name="list-item" :item="item">
           {{ item }}
         </slot>
