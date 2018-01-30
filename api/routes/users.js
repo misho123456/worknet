@@ -131,6 +131,54 @@ router.delete('/profile/experiences/:id', async (req, res, next) => {
   }
 })
 
+router.get('/profile/educations', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getEducations(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/educations', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.addEducation(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.put('/profile/educations/:id', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.editEducation(userName, req.params.id, req.body)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/educations/:id', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.deleteEducation(userName, req.params.id)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.post('/profile/deactivation', (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 

@@ -169,6 +169,58 @@ async function deleteJobExperience(userName, id) {
   await userRepository.saveJobExperiences(userName, experiences)
 }
 
+async function getEducations(userName) {
+  return await userRepository.getEducations(userName)
+}
+
+async function addEducation(userName, education) {
+  domainUtils.validatePeriod(
+    education.startMonth,
+    education.startYear,
+    education.endMonth,
+    education.endYear
+  )
+
+  education.id = shortid.generate()
+
+  let educations = await userRepository.getEducations(userName)
+
+  educations.push(education)
+
+  await userRepository.saveEducations(userName, educations)
+
+  return education.id
+}
+
+async function editEducation(userName, id, education) {
+  if (!education.id) education.id = id
+
+  domainUtils.validatePeriod(
+    education.startMonth,
+    education.startYear,
+    education.endMonth,
+    education.endYear
+  )
+
+  let educations = await userRepository.getEducations(userName)
+
+  let index = educations.findIndex(item => item.id === education.id)
+
+  educations[index] = education
+
+  await userRepository.saveEducations(userName, educations)
+}
+
+async function deleteEducation(userName, id) {
+  let educations = await userRepository.getEducations(userName)
+
+  let index = educations.findIndex(item => item.id === id)
+
+  educations.splice(index, 1)
+
+  await userRepository.saveEducations(userName, educations)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -183,5 +235,9 @@ module.exports = {
   getJobExperiences,
   addJobExperience,
   replaceJobExperience,
-  deleteJobExperience
+  deleteJobExperience,
+  getEducations,
+  addEducation,
+  editEducation,
+  deleteEducation
 }

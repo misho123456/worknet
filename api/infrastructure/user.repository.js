@@ -184,6 +184,51 @@ async function saveUser(user) {
   return await client.index(options)
 }
 
+async function getEducations(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'educations'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.educations
+}
+
+async function saveEducations(userName, educations) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      },
+      script: {
+        source: 'ctx._source.educations = params.educations',
+        params: {
+          educations
+        }
+      }
+    }
+  }
+
+  await client.updateByQuery(options)
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -192,5 +237,7 @@ module.exports = {
   saveUser,
   getSkills,
   getJobExperiences,
-  saveJobExperiences
+  saveJobExperiences,
+  getEducations,
+  saveEducations
 }
