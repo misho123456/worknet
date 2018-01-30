@@ -10,7 +10,7 @@
       </b-form-input>
     </slot>
     <b-list-group v-if="openSuggestion" class="autocomplete-list">
-      <b-list-group-item v-for="(item, index) in list" :active="isActive(index)" @click="suggestionClick(index)" :key="item">
+      <b-list-group-item v-for="(item, index) in suggestions" :active="isActive(index)" @click="suggestionClick(index)" :key="item">
         <slot name="list-item" :item="item">
           {{ item }}
         </slot>
@@ -28,6 +28,10 @@ export default {
     minimumChars: {
       type: Number,
       default: 2
+    },
+    synchronous: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -92,6 +96,11 @@ export default {
       return this.inputValue.length >= this.minimumChars &&
         this.list.length !== 0 &&
         this.open === true
+    },
+    suggestions () {
+      if (!this.synchronous) return this.list
+
+      return this.list.filter(item => item.includes(this.inputValue))
     }
   }
 }
