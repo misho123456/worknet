@@ -5,33 +5,7 @@
 
     <profile-skills></profile-skills>
 
-    <b-card title="განათლება">
-      <p>
-        <b>ფორმალური განათლების დონე: </b>{{myProfile.formalEducationLevelName}}
-      </p>
-      <b-btn class="right-float">დამატება</b-btn>
-      <b-list-group class="right-clear">
-        <b-list-group-item v-for="edu in myProfile.educations" :key="keyOfObject(edu)">
-          <div>
-            <p>
-              <b>
-                {{edu.educationType}}({{edu.educationLevel}}):
-              </b>
-              {{edu.institution}} [{{edu.locationName}}, {{edu.locationUnitName}}]
-            </p>
-            <p>
-              <b>მიმართულება: </b>{{edu.directionName}}</p>
-            <p>
-              <b>პერიოდი: </b>{{edu.startMonth}}/{{edu.startYear}} - {{edu.endMonth}}/{{edu.endYear}}</p>
-          </div>
-          <div class="right-float">
-            <b-btn>რედაქტირება</b-btn>
-            <b-btn>წაშლა</b-btn>
-          </div>
-        </b-list-group-item>
-      </b-list-group>
-    </b-card>
-
+    <educations></educations>
 
     <experiences></experiences>
 
@@ -44,6 +18,7 @@
   import profileSkills from './profile-skills'
   import utils from '../../utils'
   import experiences from './experiences'
+  import educations from './educations'
 
   const baseUrl = '/api/users/profile'
   const headers = {
@@ -73,7 +48,8 @@
     components: {
       'maininfo': maininfo,
       'profile-skills': profileSkills,
-      'experiences': experiences
+      'experiences': experiences,
+      'educations': educations
     }
   }
 </script>
