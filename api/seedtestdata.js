@@ -415,6 +415,14 @@ const testLibs = [{
   ]
 }]
 
+const testEducationTypes = [
+  { name: 'უმაღლესი განათლება' },
+  { name: 'პროფესიული განათლება' },
+  { name: 'უმაღლესი/პროფესიული სასწავლებლის სტუდენტი' },
+  { name: 'ტრენინგები' },
+  { name: 'არაფორმალური განათლება' }
+]
+
 const testSkills = [
   { name: 'Auditing' },
   { name: 'AutoCAD' },
@@ -487,4 +495,5 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
+seedData(testEducationTypes, 'lib', libIndex, 'educationType', false)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
