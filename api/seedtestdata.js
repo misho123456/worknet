@@ -423,6 +423,13 @@ const testEducationTypes = [
   { name: 'არაფორმალური განათლება' }
 ]
 
+const testEducationLevels = [
+  { name: 'ბაკალავრი' },
+  { name: 'მაგისტრი' },
+  { name: 'მაგისტრთან გათანაბრებული' },
+  { name: 'დოქტორი' }
+]
+
 const testSkills = [
   { name: 'Auditing' },
   { name: 'AutoCAD' },
@@ -496,4 +503,5 @@ seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
 seedData(testEducationTypes, 'lib', libIndex, 'educationType', false)
+seedData(testEducationLevels, 'lib', libIndex, 'educationLevel', false)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
