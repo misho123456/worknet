@@ -4,7 +4,7 @@
       <p>
         <b>ფორმალური განათლების დონე: </b>{{formalEducationLevelName}}
       </p>
-      <b-btn class="right-float">დამატება</b-btn>
+      <b-btn class="right-float" @click="show(currentEducation)">დამატება</b-btn>
       <b-list-group class="right-clear">
         <b-list-group-item v-for="edu in educations" :key="edu.id">
           <div>
@@ -28,7 +28,7 @@
             </p>
           </div>
           <div class="right-float">
-            <b-btn>რედაქტირება</b-btn>
+            <b-btn @click="show(edu)">რედაქტირება</b-btn>
             <b-btn>წაშლა</b-btn>
           </div>
         </b-list-group-item>
@@ -36,7 +36,37 @@
     </b-card>
 
     <b-modal ref="educationModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
-
+      <b-form-group label="განათლების ტიპი">
+        <b-form-select v-model="currentEducation.educationType" class="mb-3">
+          <option v-for="type in educationTypes">{{type}}</option>
+        </b-form-select>
+      </b-form-group>
+      <b-form-group label="ხარისხი" v-if="showEducationLevelSelect">
+        <b-form-select v-model="currentEducation.educationLevel" class="mb-3">
+          <option v-for="level in educationLevels">{{level}}</option>
+        </b-form-select>
+      </b-form-group>
+      <b-form-group label="სასწავლებელი">
+         <b-form-input v-model="currentEducation.institution" type="text">
+         </b-form-input>
+      </b-form-group>
+      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia">
+        სასწავლებელი საქართველოშია
+      </b-form-checkbox>
+      <div v-if="currentEducation.locationIsInGeorgia">
+        <label>
+          <b>რეგიონი & რაიონი</b>
+        </label>
+        <locations v-if="locations.length>0"
+            :locations="locations"
+            :currentLocationName="currentEducation.locationName"
+            :currentLocationUnitName="currentEducation.locationUnitName"
+            @onLocationChanged="onLocationChanged">
+        </locations>
+      </div>
+      <b-form-group label="მისამართი">
+        <b-form-input v-model="currentEducation.additionalAddressInfo" type="text"></b-form-input>
+      </b-form-group>
       <b-container class="periods">
         <b-row no-gutters>
           <b-col>
@@ -77,7 +107,10 @@
 
 <script>
 import monthPeriod from '../common/month-period'
+import locations from '../common/locations'
 import { bus } from '../common/bus'
+import libs from '../../libs'
+import utils from '../../utils'
 
 const baseUrl = 'api/users/profile/educations'
 const headers = {
@@ -90,42 +123,119 @@ export default {
     formalEducationLevelName: 'უმაღლესი - ბაკალავრი',
     educations: [],
     currentEducation: {},
-    stillLearning: false
+    stillLearning: false,
+    educationTypes: [],
+    educationLevels: [],
+    locations: []
   }),
   async created() {
     try {
-      let response = await this.$http.get(baseUrl, {headers})
+      let [
+        response,
+        locationResponse,
+        typesResponse,
+        levelsResponse
+      ] = await Promise.all([
+        this.$http.get(baseUrl, {headers}),
+        libs.fetchLocationsOfGeorgia(),
+        libs.fetchEducationTypes(),
+        libs.fetchEducationLevels()
+      ])
 
       this.educations = response.data
+      this.locations = locationResponse.data
+      this.educationTypes = typesResponse.data
+      this.educationLevels = levelsResponse.data
     } catch (error) {
       bus.$emit('error', error)
     }
+
+    this.currentEducation = this.educationStartState()
   },
   methods: {
-    submit() {
+    educationStartState() {
+      return {
+        startMonth: null,
+        startYear: null,
+        endMonth: null,
+        endYear: null,
+        locationIsInGeorgia: true,
+        locationName: null,
+        locationUnitName: null
+      }
+    },
+    show(education) {
+      this.currentEducation = Object.assign({}, education)
 
+      if (utils.isNullOrUndefined(this.currentEducation.endMonth) &&
+        utils.isNullOrUndefined(this.currentEducation.endYear)) this.stillLearning = true
+      else {
+        this.stillLearning = false
+      }
+
+      this.$refs.educationModal.show()
+    },
+    submit() {
+      console.log(this.currentEducation)
     },
     onHide() {
-
+      this.currentEducation = this.educationStartState()
     },
-    onStartMonthChange() {
-
+    onStartMonthChange(value) {
+      this.currentEducation.startMonth = value
     },
-    onStartYearChange() {
-
+    onStartYearChange(value) {
+      this.currentEducation.startYear = value
     },
-    onEndMonthChange() {
-
+    onEndMonthChange(value) {
+      this.currentEducation.endMonth = value
     },
-    onEndYearChange() {
-
+    onEndYearChange(value) {
+      this.currentEducation.endYear = value
+    }
+  },
+  computed: {
+    showEducationLevelSelect() {
+      return this.currentEducation.educationType === 'უმაღლესი განათლება'
     }
   },
   components: {
-    'month-period': monthPeriod
+    'month-period': monthPeriod,
+    'locations': locations
   }
 }
 </script>
 
 <style scoped>
+p {
+  text-align: left;
+}
+
+.right-float {
+  float: right
+}
+
+.right-clear {
+  clear: right;
+}
+
+.card {
+  background: whitesmoke;
+}
+
+.card-title {
+  background-color: darkslategray;
+  color: whitesmoke;
+  border: solid darkslategray 10px;
+  border-radius: 15px;
+}
+
+.list-group-item {
+  border-bottom: solid darkseagreen;
+}
+
+.period-present-text {
+  padding-top: 1.375rem;
+  margin-top: 3rem;
+}
 </style>
