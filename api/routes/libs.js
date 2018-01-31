@@ -13,6 +13,16 @@ router.get('/locationsOfGeorgia', async (req, res) => {
   }
 })
 
+router.get('/educationTypes', async (req, res, next) => {
+  try {
+    let result = await libRepository.getEducationTypes()
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl

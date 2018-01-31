@@ -8,3 +8,4 @@ elastic:
   skillsType: 'skill'
   libIndex: 'lib'
   locationType: 'location'
+  educationTypesType: 'educationType'
