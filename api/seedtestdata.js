@@ -489,10 +489,15 @@ const testSkills = [
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
+
     if (dropIndexIfExists === true && exists === true) {
       await deleteIndex(index)
     }
-    await createIndex(index, indexOption)
+
+    if (!exists) {
+      await createIndex(index, indexOption)
+    }
+
     await insertData(index, type, data)
   } catch (error) {
     console.error(error)
