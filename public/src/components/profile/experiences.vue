@@ -51,10 +51,10 @@
             :currentLocationUnitName="currentExperience.locationUnitName"
             @onLocationChanged="onLocationChanged">
         </locations>
-        <b-form-group label="მისამართი">
-          <b-form-input v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
-        </b-form-group>
       </div>
+      <b-form-group label="მისამართი">
+        <b-form-input v-model="currentExperience.additionalAddressInfo" type="text"></b-form-input>
+      </b-form-group>
       <b-container class="periods">
         <b-row no-gutters>
           <b-col>
