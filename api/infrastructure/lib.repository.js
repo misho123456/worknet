@@ -10,6 +10,7 @@ const utils = require('./utils')
 const index = config.get('elastic.libIndex')
 const type = config.get('elastic.locationType')
 const educationTypesType = config.get('elastic.educationTypesType')
+const educationLevelType = config.get('elastic.educationLevelType')
 
 async function getLocationsInGeorgia() {
 
@@ -35,7 +36,19 @@ async function getEducationTypes() {
   return result.hits.hits.map(item => item._source.name)
 }
 
+async function getEducationLevels() {
+  let options = {
+    index,
+    educationLevelType
+  }
+
+  let result = await client.search(options)
+
+  return result.hits.hits.map(item => item._source.name)
+}
+
 module.exports = {
   getLocationsInGeorgia,
-  getEducationTypes
+  getEducationTypes,
+  getEducationLevels
 }

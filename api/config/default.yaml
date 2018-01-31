@@ -9,3 +9,4 @@ elastic:
   libIndex: 'lib'
   locationType: 'location'
   educationTypesType: 'educationType'
+  educationLevelType: 'educationLevel'
