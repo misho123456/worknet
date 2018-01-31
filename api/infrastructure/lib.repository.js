@@ -28,7 +28,7 @@ async function getLocationsInGeorgia() {
 async function getEducationTypes() {
   let options = {
     index,
-    educationTypesType
+    type: educationTypesType
   }
 
   let result = await client.search(options)
@@ -39,7 +39,7 @@ async function getEducationTypes() {
 async function getEducationLevels() {
   let options = {
     index,
-    educationLevelType
+    type: educationLevelType
   }
 
   let result = await client.search(options)
