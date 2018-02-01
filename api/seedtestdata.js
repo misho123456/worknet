@@ -438,6 +438,20 @@ const testEducationLevels = [
   { name: 'დოქტორი' }
 ]
 
+const testFormalEducationLevels = [
+  { name: 'უმაღლესი - ბაკალავრი' },
+  { name: 'უმაღლესი - მაგისტრი' },
+  { name: 'უმაღლესი - მაგისტრთან გათანაბრებული' },
+  { name: 'უმაღლესი - დოქტორანტურა' },
+  { name: 'უმაღლესი (დაუსრულებელი)' },
+  { name: 'უმაღლესი საგანმანათლებლო დაწესებულების სტუდენტი' },
+  { name: 'პროფესიული საგანმანათლებლო დაწესებულების სტუდენტი' },
+  { name: 'საშუალო, ტექნიკური ან პროფესიული განათლება' },
+  { name: 'საშუალო სკოლა (დასრულებული)' },
+  { name: 'საშუალო სკოლა (დაუსრულებელი)' },
+  { name: 'დაწყებითი განათლება' }
+]
+
 const testSkills = [
   { name: 'Auditing' },
   { name: 'AutoCAD' },
@@ -517,4 +531,5 @@ seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
 seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
+seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
