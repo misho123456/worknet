@@ -29,6 +29,14 @@ async function insertData(index, type, users) {
   })
 }
 
+const indexDefaultOptions = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
 const userIndex = {
   'settings': {
     'index': {
@@ -81,6 +89,7 @@ const testUsers = [{
   'contactDescription': 'დამატებითი საკონტაქტო ინფორმაცია ბლაბლა',
   'educations': [
     {
+      'id': shortid.generate(),
       'educationType': 'უმაღლესი განათლება',
       'educationLevel': 'ბაკალავრი',
       'institution': '       გორკის    სახ. აფხაზეთის სახელმწიფო უნივერსიტეტი',
@@ -415,6 +424,34 @@ const testLibs = [{
   ]
 }]
 
+const testEducationTypes = [
+  { name: 'უმაღლესი განათლება' },
+  { name: 'პროფესიული განათლება' },
+  { name: 'ტრენინგები' },
+  { name: 'არაფორმალური განათლება' }
+]
+
+const testEducationLevels = [
+  { name: 'ბაკალავრი' },
+  { name: 'მაგისტრი' },
+  { name: 'მაგისტრთან გათანაბრებული' },
+  { name: 'დოქტორი' }
+]
+
+const testFormalEducationLevels = [
+  { name: 'უმაღლესი - ბაკალავრი' },
+  { name: 'უმაღლესი - მაგისტრი' },
+  { name: 'უმაღლესი - მაგისტრთან გათანაბრებული' },
+  { name: 'უმაღლესი - დოქტორანტურა' },
+  { name: 'უმაღლესი (დაუსრულებელი)' },
+  { name: 'უმაღლესი საგანმანათლებლო დაწესებულების სტუდენტი' },
+  { name: 'პროფესიული საგანმანათლებლო დაწესებულების სტუდენტი' },
+  { name: 'საშუალო, ტექნიკური ან პროფესიული განათლება' },
+  { name: 'საშუალო სკოლა (დასრულებული)' },
+  { name: 'საშუალო სკოლა (დაუსრულებელი)' },
+  { name: 'დაწყებითი განათლება' }
+]
+
 const testSkills = [
   { name: 'Auditing' },
   { name: 'AutoCAD' },
@@ -492,4 +529,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
+seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
+seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
+seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
