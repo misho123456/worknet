@@ -37,7 +37,7 @@
 
     <b-modal ref="educationModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="განათლების ტიპი">
-        <b-form-select v-model="currentEducation.educationType" @change="onEducationTypeChange" class="mb-3">
+        <b-form-select v-model="currentEducation.educationType" class="mb-3">
           <option v-for="type in educationTypes">{{type}}</option>
         </b-form-select>
       </b-form-group>
@@ -134,7 +134,8 @@ export default {
     stillLearning: false,
     educationTypes: [],
     educationLevels: [],
-    locationList: []
+    locationList: [],
+    educationToSubmit: {}
   }),
   async created() {
     try {
@@ -184,10 +185,56 @@ export default {
       this.$refs.educationModal.show()
     },
     submit() {
-      console.log(this.currentEducation)
+      this.educationToSubmit = this.currentEducation
+
+      this.removeHiddenFields(this.educationToSubmit)
+
+      if (this.educationToSubmit.id) {
+        return this.editEducation()
+      }
+
+      this.addEducation()
     },
     onHide() {
       this.currentEducation = this.educationStartState()
+    },
+    async addEducation() {
+      try {
+        let response = await this.$http.post(
+          baseUrl,
+          this.educationToSubmit,
+          {headers}
+        )
+
+        this.educationToSubmit.id = response.data
+
+        this.educations.push(this.educationToSubmit)
+
+        this.educationToSubmit = {}
+
+        bus.$emit('success', 'განათლება წარმატებით დაემატა')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
+    },
+    async editEducation() {
+      try {
+        let url = baseUrl + '/' + this.educationToSubmit.id
+
+        await this.$http.put(url, this.educationToSubmit, {headers})
+
+        let index = this.educations.findIndex(
+          item => item.id === this.educationToSubmit.id
+        )
+
+        this.educations[index] = this.educationToSubmit
+
+        this.educationToSubmit = {}
+
+        bus.$emit('success', 'განათლება წარმატებით შეიცვალა')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     },
     onStartMonthChange(value) {
       this.currentEducation.startMonth = value
@@ -205,10 +252,22 @@ export default {
       this.currentEducation.locationName = location.locationName
       this.currentEducation.locationUnitName = location.locationUnitName
     },
-    onEducationTypeChange(value) {
-      if (value === academicEducationType) return
+    removeHiddenFields(education) {
+      if (education.educationType === academicEducationType) return
 
-      this.currentEducation.educationLevel = undefined
+      education.educationLevel = undefined
+
+      if (education.educationType !== informalEducationType) return
+
+      education.institution = undefined
+      education.locationIsInGeorgia = undefined
+      education.locationName = undefined
+      education.locationUnitName = undefined
+      education.additionalAddressInfo = undefined
+      education.startMonth = undefined
+      education.startYear = undefined
+      education.endMonth = undefined
+      education.endYear = undefined
     }
   },
   computed: {
