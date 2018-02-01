@@ -89,6 +89,7 @@ const testUsers = [{
   'contactDescription': 'დამატებითი საკონტაქტო ინფორმაცია ბლაბლა',
   'educations': [
     {
+      'id': shortid.generate(),
       'educationType': 'უმაღლესი განათლება',
       'educationLevel': 'ბაკალავრი',
       'institution': '       გორკის    სახ. აფხაზეთის სახელმწიფო უნივერსიტეტი',
