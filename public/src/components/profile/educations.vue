@@ -50,6 +50,10 @@
          <b-form-input v-model="currentEducation.institution" type="text">
          </b-form-input>
       </b-form-group>
+      <b-form-group label="მიმართულება">
+         <b-form-input v-model="currentEducation.directionName" type="text">
+         </b-form-input>
+      </b-form-group>
       <b-form-checkbox v-model="currentEducation.locationIsInGeorgia">
         სასწავლებელი საქართველოშია
       </b-form-checkbox>
