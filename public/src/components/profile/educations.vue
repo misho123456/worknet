@@ -37,7 +37,7 @@
 
     <b-modal ref="educationModal" ok-title="შენახვა" cancel-title="დახურვა" @ok="submit" @hide="onHide">
       <b-form-group label="განათლების ტიპი">
-        <b-form-select v-model="currentEducation.educationType" class="mb-3">
+        <b-form-select v-model="currentEducation.educationType" @change="onEducationTypeChange" class="mb-3">
           <option v-for="type in educationTypes">{{type}}</option>
         </b-form-select>
       </b-form-group>
@@ -57,8 +57,8 @@
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
-        <locations v-if="locations.length>0"
-            :locations="locations"
+        <locations v-if="locationList.length>0"
+            :locations="locationList"
             :currentLocationName="currentEducation.locationName"
             :currentLocationUnitName="currentEducation.locationUnitName"
             @onLocationChanged="onLocationChanged">
@@ -116,6 +116,7 @@ const baseUrl = 'api/users/profile/educations'
 const headers = {
   username: 'test'
 } // temporary headers until um is written
+const academicEducationType = 'უმაღლესი განათლება'
 
 export default {
   name: 'educations',
@@ -126,15 +127,15 @@ export default {
     stillLearning: false,
     educationTypes: [],
     educationLevels: [],
-    locations: []
+    locationList: []
   }),
   async created() {
     try {
       let [
         response,
-        locationResponse,
-        typesResponse,
-        levelsResponse
+        locations,
+        types,
+        levels
       ] = await Promise.all([
         this.$http.get(baseUrl, {headers}),
         libs.fetchLocationsOfGeorgia(),
@@ -143,9 +144,9 @@ export default {
       ])
 
       this.educations = response.data
-      this.locations = locationResponse.data
-      this.educationTypes = typesResponse.data
-      this.educationLevels = levelsResponse.data
+      this.locationList = locations
+      this.educationTypes = types
+      this.educationLevels = levels
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -192,11 +193,20 @@ export default {
     },
     onEndYearChange(value) {
       this.currentEducation.endYear = value
+    },
+    onLocationChanged(location) {
+      this.currentEducation.locationName = location.locationName
+      this.currentEducation.locationUnitName = location.locationUnitName
+    },
+    onEducationTypeChange(value) {
+      if (value === academicEducationType) return
+
+      this.currentEducation.educationLevel = undefined
     }
   },
   computed: {
     showEducationLevelSelect() {
-      return this.currentEducation.educationType === 'უმაღლესი განათლება'
+      return this.currentEducation.educationType === academicEducationType
     }
   },
   components: {
