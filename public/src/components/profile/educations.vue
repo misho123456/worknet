@@ -46,7 +46,7 @@
           <option v-for="level in educationLevels">{{level}}</option>
         </b-form-select>
       </b-form-group>
-      <b-form-group label="სასწავლებელი">
+      <b-form-group label="სასწავლებელი" v-if="showOfficialEducationFields">
          <b-form-input v-model="currentEducation.institution" type="text">
          </b-form-input>
       </b-form-group>
@@ -54,10 +54,10 @@
          <b-form-input v-model="currentEducation.directionName" type="text">
          </b-form-input>
       </b-form-group>
-      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia">
+      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia" v-if="showOfficialEducationFields">
         სასწავლებელი საქართველოშია
       </b-form-checkbox>
-      <div v-if="currentEducation.locationIsInGeorgia">
+      <div v-if="currentEducation.locationIsInGeorgia && showOfficialEducationFields">
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
@@ -68,42 +68,44 @@
             @onLocationChanged="onLocationChanged">
         </locations>
       </div>
-      <b-form-group label="მისამართი">
+      <b-form-group label="მისამართი" v-if="showOfficialEducationFields">
         <b-form-input v-model="currentEducation.additionalAddressInfo" type="text"></b-form-input>
       </b-form-group>
-      <b-container class="periods">
-        <b-row no-gutters>
-          <b-col>
-            <div class="monthPeriod">
-                <label>დასაწყისი</label>
+      <div v-if="showOfficialEducationFields">
+        <b-container class="periods">
+          <b-row no-gutters>
+            <b-col>
+              <div class="monthPeriod">
+                  <label>დასაწყისი</label>
+                  <month-period
+                    :month="currentEducation.startMonth"
+                    :year="currentEducation.startYear"
+                    @month="onStartMonthChange"
+                    @year="onStartYearChange">
+                  </month-period>
+              </div>
+            </b-col>
+            <b-col>
+              <div class="monthPeriod" v-if="!stillLearning">
+                <label>დასასრული</label>
                 <month-period
-                  :month="currentEducation.startMonth"
-                  :year="currentEducation.startYear"
-                  @month="onStartMonthChange"
-                  @year="onStartYearChange">
+                  :month="currentEducation.endMonth"
+                  :year="currentEducation.endYear"
+                  @month="onEndMonthChange"
+                  @year="onEndYearChange">
                 </month-period>
-            </div>
-          </b-col>
-          <b-col>
-            <div class="monthPeriod" v-if="!stillLearning">
-              <label>დასასრული</label>
-              <month-period
-                :month="currentEducation.endMonth"
-                :year="currentEducation.endYear"
-                @month="onEndMonthChange"
-                @year="onEndYearChange">
-              </month-period>
-            </div>
-            <div class="period-present-text" v-else>
-              დღემდე
-            </div>
-          </b-col>
-        </b-row>
-      </b-container>
+              </div>
+              <div class="period-present-text" v-else>
+                დღემდე
+              </div>
+            </b-col>
+          </b-row>
+        </b-container>
 
-      <b-form-checkbox v-model="stillLearning">
-        ახლაც აქ ვსწავლობ
-      </b-form-checkbox>
+        <b-form-checkbox v-model="stillLearning">
+          ახლაც აქ ვსწავლობ
+        </b-form-checkbox>
+      </div>
 
     </b-modal>
   </div>
@@ -121,6 +123,7 @@ const headers = {
   username: 'test'
 } // temporary headers until um is written
 const academicEducationType = 'უმაღლესი განათლება'
+const informalEducationType = 'არაფორმალური განათლება'
 
 export default {
   name: 'educations',
@@ -211,6 +214,9 @@ export default {
   computed: {
     showEducationLevelSelect() {
       return this.currentEducation.educationType === academicEducationType
+    },
+    showOfficialEducationFields() {
+      return this.currentEducation.educationType !== informalEducationType
     }
   },
   components: {
