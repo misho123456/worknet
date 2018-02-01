@@ -29,6 +29,14 @@ async function insertData(index, type, users) {
   })
 }
 
+const indexDefaultOptions = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
 const userIndex = {
   'settings': {
     'index': {
@@ -507,6 +515,6 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
-seedData(testEducationTypes, 'lib', libIndex, 'educationType', false)
-seedData(testEducationLevels, 'lib', libIndex, 'educationLevel', false)
+seedData(testEducationTypes, 'educationType', indexDefaultOptions, 'educationType', true)
+seedData(testEducationLevels, 'educationLevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
