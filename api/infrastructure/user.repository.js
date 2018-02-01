@@ -229,6 +229,51 @@ async function saveEducations(userName, educations) {
   await client.updateByQuery(options)
 }
 
+async function getFormalEducationLevel(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'formalEducationLevelName'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.formalEducationLevelName
+}
+
+async function setFormalEducationLevel(userName, level) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      },
+      script: {
+        source: 'ctx._source.formalEducationLevelName = params.level',
+        params: {
+          level
+        }
+      }
+    }
+  }
+
+  await client.updateByQuery(options)
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -239,5 +284,7 @@ module.exports = {
   getJobExperiences,
   saveJobExperiences,
   getEducations,
-  saveEducations
+  saveEducations,
+  getFormalEducationLevel,
+  setFormalEducationLevel
 }

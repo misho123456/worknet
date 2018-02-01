@@ -221,6 +221,14 @@ async function deleteEducation(userName, id) {
   await userRepository.saveEducations(userName, educations)
 }
 
+async function getFormalEducationLevel(userName) {
+  return await userRepository.getFormalEducationLevel(userName)
+}
+
+async function setFormalEducationLevel(userName, level) {
+  await userRepository.setFormalEducationLevel(userName, level)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -239,5 +247,7 @@ module.exports = {
   getEducations,
   addEducation,
   editEducation,
-  deleteEducation
+  deleteEducation,
+  getFormalEducationLevel,
+  setFormalEducationLevel
 }

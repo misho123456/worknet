@@ -143,6 +143,30 @@ router.get('/profile/educations', async (req, res, next) => {
   }
 })
 
+router.get('/profile/educations/formalEducationLevel', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = userInteractor.getFormalEducationLevel(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/educations/formalEducationLevel', async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.setFormalEducationLevel(userName, req.body.level)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.post('/profile/educations', async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
