@@ -8,19 +8,27 @@
       <b-list-group class="right-clear">
         <b-list-group-item v-for="edu in educations" :key="edu.id">
           <div>
-            <p>
+            <p v-if="showFormalEducationFields(edu)">
               <b>
-                {{edu.educationType}}({{edu.educationLevel}}):
+                {{edu.educationType}}
+                <span v-if="showEducationLevel(edu)">
+                  ({{edu.educationLevel}})
+                </span>:
               </b>
               {{edu.institution}}
               <span v-if="edu.locationName">
                 [{{edu.locationName}}, {{edu.locationUnitName}}]
               </span>
             </p>
+            <p v-else> <!-- informal eduction -->
+              <b>
+                {{edu.educationType}}
+              </b>
+            </p>
             <p>
               <b>მიმართულება: </b>{{edu.directionName}}
             </p>
-            <p>
+            <p v-if="showFormalEducationFields(edu)">
               <b>პერიოდი: </b>
               {{edu.startMonth}}/{{edu.startYear}} -
               <span v-if="edu.endYear && edu.endMonth">{{edu.endMonth}}/{{edu.endYear}}</span>
@@ -41,12 +49,12 @@
           <option v-for="type in educationTypes">{{type}}</option>
         </b-form-select>
       </b-form-group>
-      <b-form-group label="ხარისხი" v-if="showEducationLevelSelect">
+      <b-form-group label="ხარისხი" v-if="showEducationLevel(currentEducation)">
         <b-form-select v-model="currentEducation.educationLevel" class="mb-3">
           <option v-for="level in educationLevels">{{level}}</option>
         </b-form-select>
       </b-form-group>
-      <b-form-group label="სასწავლებელი" v-if="showOfficialEducationFields">
+      <b-form-group label="სასწავლებელი" v-if="showFormalEducationFields(currentEducation)">
          <b-form-input v-model="currentEducation.institution" type="text">
          </b-form-input>
       </b-form-group>
@@ -54,10 +62,10 @@
          <b-form-input v-model="currentEducation.directionName" type="text">
          </b-form-input>
       </b-form-group>
-      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia" v-if="showOfficialEducationFields">
+      <b-form-checkbox v-model="currentEducation.locationIsInGeorgia" v-if="showFormalEducationFields(currentEducation)">
         სასწავლებელი საქართველოშია
       </b-form-checkbox>
-      <div v-if="currentEducation.locationIsInGeorgia && showOfficialEducationFields">
+      <div v-if="currentEducation.locationIsInGeorgia && showFormalEducationFields(currentEducation)">
         <label>
           <b>რეგიონი & რაიონი</b>
         </label>
@@ -68,10 +76,10 @@
             @onLocationChanged="onLocationChanged">
         </locations>
       </div>
-      <b-form-group label="მისამართი" v-if="showOfficialEducationFields">
+      <b-form-group label="მისამართი" v-if="showFormalEducationFields(currentEducation)">
         <b-form-input v-model="currentEducation.additionalAddressInfo" type="text"></b-form-input>
       </b-form-group>
-      <div v-if="showOfficialEducationFields">
+      <div v-if="showFormalEducationFields(currentEducation)">
         <b-container class="periods">
           <b-row no-gutters>
             <b-col>
@@ -284,14 +292,12 @@ export default {
       education.startYear = null
       education.endMonth = null
       education.endYear = null
-    }
-  },
-  computed: {
-    showEducationLevelSelect() {
-      return this.currentEducation.educationType === academicEducationType
     },
-    showOfficialEducationFields() {
-      return this.currentEducation.educationType !== informalEducationType
+    showEducationLevel(education) {
+      return education.educationType === academicEducationType
+    },
+    showFormalEducationFields(education) {
+      return education.educationType !== informalEducationType
     }
   },
   components: {
