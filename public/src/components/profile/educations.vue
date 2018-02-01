@@ -311,7 +311,7 @@ export default {
       return education.educationType !== informalEducationType
     },
     async onFormalEducationLevelChange(value) {
-      if (value === this.formalEducationLevelName) return
+      if (value === this.formalEducationLevelName || !value) return
 
       let url = baseUrl + '/formalEducationLevel'
 

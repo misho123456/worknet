@@ -147,7 +147,7 @@ router.get('/profile/educations/formalEducationLevel', async (req, res, next) =>
   let userName = utils.getUserNameFromRequest(req)
 
   try {
-    let result = userInteractor.getFormalEducationLevel(userName)
+    let result = await userInteractor.getFormalEducationLevel(userName)
 
     next({result})
   } catch (error) {
