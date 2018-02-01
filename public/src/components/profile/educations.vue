@@ -264,6 +264,11 @@ export default {
       this.currentEducation.locationUnitName = location.locationUnitName
     },
     removeHiddenFields(education) {
+      if (!education.locationIsInGeorgia) {
+        education.locationName = undefined
+        education.locationUnitName = undefined
+      }
+
       if (education.educationType === academicEducationType) return
 
       education.educationLevel = undefined
