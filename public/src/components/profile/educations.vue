@@ -223,11 +223,11 @@ export default {
 
         await this.$http.put(url, this.educationToSubmit, {headers})
 
-        let index = this.educations.findIndex(
+        let education = this.educations.find(
           item => item.id === this.educationToSubmit.id
         )
 
-        this.educations[index] = this.educationToSubmit
+        Object.assign(education, this.educationToSubmit)
 
         this.educationToSubmit = {}
 
@@ -265,25 +265,25 @@ export default {
     },
     removeHiddenFields(education) {
       if (!education.locationIsInGeorgia) {
-        education.locationName = undefined
-        education.locationUnitName = undefined
+        education.locationName = null
+        education.locationUnitName = null
       }
 
       if (education.educationType === academicEducationType) return
 
-      education.educationLevel = undefined
+      education.educationLevel = null
 
       if (education.educationType !== informalEducationType) return
 
-      education.institution = undefined
-      education.locationIsInGeorgia = undefined
-      education.locationName = undefined
-      education.locationUnitName = undefined
-      education.additionalAddressInfo = undefined
-      education.startMonth = undefined
-      education.startYear = undefined
-      education.endMonth = undefined
-      education.endYear = undefined
+      education.institution = null
+      education.locationIsInGeorgia = null
+      education.locationName = null
+      education.locationUnitName = null
+      education.additionalAddressInfo = null
+      education.startMonth = null
+      education.startYear = null
+      education.endMonth = null
+      education.endYear = null
     }
   },
   computed: {
