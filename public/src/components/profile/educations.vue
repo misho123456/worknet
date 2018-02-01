@@ -2,7 +2,10 @@
   <div class="educations">
     <b-card title="განათლება">
       <p>
-        <b>ფორმალური განათლების დონე: </b>{{formalEducationLevelName}}
+        <b>ფორმალური განათლების დონე: </b>
+        <b-form-select id="formal-level-select" :value="formalEducationLevelName" @change="onFormalEducationLevelChange">
+          <option v-for="level in formalEducationLevels">{{level}}</option>
+        </b-form-select>
       </p>
       <b-btn class="right-float" @click="show(currentEducation)">დამატება</b-btn>
       <b-list-group class="right-clear">
@@ -136,7 +139,7 @@ const informalEducationType = 'არაფორმალური განა
 export default {
   name: 'educations',
   data: () => ({
-    formalEducationLevelName: 'უმაღლესი - ბაკალავრი',
+    formalEducationLevelName: '',
     educations: [],
     currentEducation: {},
     stillLearning: false,
@@ -153,13 +156,15 @@ export default {
         locations,
         types,
         levels,
-        formalEducationLevels
+        formalEducationLevels,
+        formalEduLevelResponse
       ] = await Promise.all([
         this.$http.get(baseUrl, {headers}),
         libs.fetchLocationsOfGeorgia(),
         libs.fetchEducationTypes(),
         libs.fetchEducationLevels(),
-        libs.fetchFormalEducationLevels()
+        libs.fetchFormalEducationLevels(),
+        this.$http.get(baseUrl + '/formalEducationLevel', {headers})
       ])
 
       this.educations = response.data
@@ -167,6 +172,8 @@ export default {
       this.educationTypes = types
       this.educationLevels = levels
       this.formalEducationLevels = formalEducationLevels
+
+      this.formalEducationLevelName = formalEduLevelResponse.data
     } catch (error) {
       bus.$emit('error', error)
     }
@@ -302,6 +309,19 @@ export default {
     },
     showFormalEducationFields(education) {
       return education.educationType !== informalEducationType
+    },
+    async onFormalEducationLevelChange(value) {
+      if (value === this.formalEducationLevelName) return
+
+      let url = baseUrl + '/formalEducationLevel'
+
+      try {
+        await this.$http.post(url, {level: value}, {headers})
+
+        this.formalEducationLevelName = value
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     }
   },
   components: {
@@ -342,5 +362,10 @@ p {
 .period-present-text {
   padding-top: 1.375rem;
   margin-top: 3rem;
+}
+
+#formal-level-select {
+  display: inline-block;
+  width: inherit;
 }
 </style>
