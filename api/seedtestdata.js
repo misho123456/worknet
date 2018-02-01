@@ -515,6 +515,6 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
 seedData(testUsers, 'user', userIndex, 'user', true)
 seedData(testJobs, 'job', jobIndex, 'job', true)
 seedData(testLibs, 'lib', libIndex, 'location', true)
-seedData(testEducationTypes, 'educationType', indexDefaultOptions, 'educationType', true)
-seedData(testEducationLevels, 'educationLevel', indexDefaultOptions, 'educationLevel', true)
+seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationType', true)
+seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
