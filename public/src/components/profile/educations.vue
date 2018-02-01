@@ -29,7 +29,7 @@
           </div>
           <div class="right-float">
             <b-btn @click="show(edu)">რედაქტირება</b-btn>
-            <b-btn>წაშლა</b-btn>
+            <b-btn @click="deleteEducation(edu.id)">წაშლა</b-btn>
           </div>
         </b-list-group-item>
       </b-list-group>
@@ -235,6 +235,17 @@ export default {
       } catch (error) {
         bus.$emit('error', error)
       }
+    },
+    async deleteEducation(id) {
+      let url = baseUrl + '/' + id
+
+      await this.$http.delete(url, {headers})
+
+      let index = this.educations.findIndex(item => item.id === id)
+
+      this.educations.splice(index, 1)
+
+      bus.$emit('success', 'განათლება წარმატებით წაიშალა')
     },
     onStartMonthChange(value) {
       this.currentEducation.startMonth = value
