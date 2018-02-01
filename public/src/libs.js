@@ -32,11 +32,24 @@ async function fetchEducationLevels() {
   return this.educationLevels
 }
 
+/**
+ * ფორმალური განათლების საფეხურების ჩატვირთვა
+ * @return {Array<String>}
+ */
+async function fetchFormalEducationLevels() {
+  if (this.formalEducationLevels) return this.formalEducationLevels
+  let response = await axios.get('api/libs/formalEducationLevels')
+  this.formalEducationLevels = response.data
+  return this.formalEducationLevels
+}
+
 export default {
   locationsOfGeorgia: undefined,
   educationTypes: undefined,
   educationLevels: undefined,
+  formalEducationLevels: undefined,
   fetchLocationsOfGeorgia,
   fetchEducationTypes,
-  fetchEducationLevels
+  fetchEducationLevels,
+  fetchFormalEducationLevels
 }

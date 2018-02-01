@@ -142,6 +142,7 @@ export default {
     stillLearning: false,
     educationTypes: [],
     educationLevels: [],
+    formalEducationLevels: [],
     locationList: [],
     educationToSubmit: {}
   }),
@@ -151,18 +152,21 @@ export default {
         response,
         locations,
         types,
-        levels
+        levels,
+        formalEducationLevels
       ] = await Promise.all([
         this.$http.get(baseUrl, {headers}),
         libs.fetchLocationsOfGeorgia(),
         libs.fetchEducationTypes(),
-        libs.fetchEducationLevels()
+        libs.fetchEducationLevels(),
+        libs.fetchFormalEducationLevels()
       ])
 
       this.educations = response.data
       this.locationList = locations
       this.educationTypes = types
       this.educationLevels = levels
+      this.formalEducationLevels = formalEducationLevels
     } catch (error) {
       bus.$emit('error', error)
     }
