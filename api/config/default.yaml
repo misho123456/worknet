@@ -12,3 +12,5 @@ elastic:
   educationTypesType: 'educationType'
   educationLevelIndex: 'educationlevel'
   educationLevelType: 'educationLevel'
+  formalEducationLevelIndex: 'formaleducationlevel'
+  formalEducationLevelType: 'formalEducationLevel'

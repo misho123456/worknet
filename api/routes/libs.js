@@ -33,6 +33,16 @@ router.get('/educationLevels', async (req, res, next) => {
   }
 })
 
+router.get('/formalEducationLevels', async (req, res, next) => {
+  try {
+    let result = await libRepository.getFormalEducationLevels()
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+});
+
 module.exports = {
   router,
   baseUrl
