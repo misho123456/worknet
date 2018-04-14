@@ -20,8 +20,8 @@ jobs:
       - checkout
 
       - run:
-        command: npm install
-        working_directory: ~/repo/api
+          command: npm install
+          working_directory: ~/repo/api
 
       # run tests!
       - run: npm test
