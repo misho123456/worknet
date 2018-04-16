@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import utils from '../../utils'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'login',
@@ -32,7 +32,7 @@ export default {
         password: this.password
       })
 
-      utils.token = response.data
+      Cookies.set('token', response.data)
 
       this.$router.push('/profile')
     }

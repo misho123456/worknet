@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 /**
  * Java ს String.hashCode() მეთოდის იმპლემენტაცია Javascript ზე.
  * წყარო http://erlycoder.com/49/javascript-hash-functions-to-convert-string-into-integer-hash-
@@ -20,13 +22,12 @@ function isNullOrUndefined(value) {
 
 function getHeaders() {
   return {
-    authorization: this.token
+    authorization: Cookies.get('token')
   }
 }
 
 export default {
   hashOfString: hashCode,
   isNullOrUndefined,
-  token: null,
   getHeaders
 }
