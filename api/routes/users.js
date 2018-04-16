@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const userInteractor = require('../interactors/user.interactor')
 const utils = require('../utils')
+const isAuthorized = require('../umpack').isAuthorized
 
 const baseUrl = '/api/users'
 
-router.get('/profile/maininfo', async (req, res, next) => {
+router.get('/profile/maininfo', isAuthorized, async (req, res, next) => {
   try {
     // let userName = utils.getUserNameFromRequest(req)
     let userName = 'test'
@@ -15,7 +16,7 @@ router.get('/profile/maininfo', async (req, res, next) => {
   }
 })
 
-router.put('/profile/maininfo', async (req, res, next) => {
+router.put('/profile/maininfo', isAuthorized, async (req, res, next) => {
   try {
     // let userName = utils.getUserNameFromRequest(req)
     let userName = 'test'
@@ -26,11 +27,11 @@ router.put('/profile/maininfo', async (req, res, next) => {
   }
 })
 
-router.get('/', (req, res, next) => {
+router.get('/', isAuthorized, (req, res, next) => {
   userInteractor.getList().then(res.send.bind(res)).catch(next)
 })
 
-router.get('/profile', (req, res, next) => {
+router.get('/profile', isAuthorized, (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.getUserProfile(userName)
@@ -38,7 +39,7 @@ router.get('/profile', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/profile', (req, res, next) => {
+router.post('/profile', isAuthorized, (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.fillUserProfile(userName, req.body)
@@ -50,7 +51,7 @@ router.post('/profile', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/profile/skills', async (req, res, next) => {
+router.get('/profile/skills', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -61,7 +62,7 @@ router.get('/profile/skills', async (req, res, next) => {
   }
 })
 
-router.post('/profile/skills', async (req, res, next) => {
+router.post('/profile/skills', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -72,7 +73,7 @@ router.post('/profile/skills', async (req, res, next) => {
   }
 })
 
-router.delete('/profile/skills/:skillName', async (req, res, next) => {
+router.delete('/profile/skills/:skillName', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -83,7 +84,7 @@ router.delete('/profile/skills/:skillName', async (req, res, next) => {
   }
 })
 
-router.get('/profile/experiences', async (req, res, next) => {
+router.get('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -95,7 +96,7 @@ router.get('/profile/experiences', async (req, res, next) => {
   }
 })
 
-router.post('/profile/experiences', async (req, res, next) => {
+router.post('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -107,7 +108,7 @@ router.post('/profile/experiences', async (req, res, next) => {
   }
 })
 
-router.put('/profile/experiences/:id', async (req, res, next) => {
+router.put('/profile/experiences/:id', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -119,7 +120,7 @@ router.put('/profile/experiences/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/profile/experiences/:id', async (req, res, next) => {
+router.delete('/profile/experiences/:id', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -131,7 +132,7 @@ router.delete('/profile/experiences/:id', async (req, res, next) => {
   }
 })
 
-router.get('/profile/educations', async (req, res, next) => {
+router.get('/profile/educations', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -143,7 +144,7 @@ router.get('/profile/educations', async (req, res, next) => {
   }
 })
 
-router.get('/profile/educations/formalEducationLevel', async (req, res, next) => {
+router.get('/profile/educations/formalEducationLevel', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -155,7 +156,7 @@ router.get('/profile/educations/formalEducationLevel', async (req, res, next) =>
   }
 })
 
-router.post('/profile/educations/formalEducationLevel', async (req, res, next) => {
+router.post('/profile/educations/formalEducationLevel', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -167,7 +168,7 @@ router.post('/profile/educations/formalEducationLevel', async (req, res, next) =
   }
 })
 
-router.post('/profile/educations', async (req, res, next) => {
+router.post('/profile/educations', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -179,7 +180,7 @@ router.post('/profile/educations', async (req, res, next) => {
   }
 })
 
-router.put('/profile/educations/:id', async (req, res, next) => {
+router.put('/profile/educations/:id', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -191,7 +192,7 @@ router.put('/profile/educations/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/profile/educations/:id', async (req, res, next) => {
+router.delete('/profile/educations/:id', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   try {
@@ -203,7 +204,7 @@ router.delete('/profile/educations/:id', async (req, res, next) => {
   }
 })
 
-router.post('/profile/deactivation', (req, res, next) => {
+router.post('/profile/deactivation', isAuthorized, (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.deactivateUserProfile(userName)
@@ -215,7 +216,7 @@ router.post('/profile/deactivation', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/profile/activation', (req, res, next) => {
+router.post('/profile/activation', isAuthorized, (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
   userInteractor.activateUserProfile(userName)

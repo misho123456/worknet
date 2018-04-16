@@ -53,6 +53,7 @@
   import locations from '../common/locations'
   import libs from '../../libs'
   import { bus } from '../common/bus'
+  import utils from '../../utils'
 
   export default {
     name: 'maininfo',
@@ -65,7 +66,7 @@
     },
     async created() {
       try {
-        const response = await this.$http.get(this.baseUrl)
+        const response = await this.$http.get(this.baseUrl, {headers: utils.getHeaders()})
         this.profileData = response.data
         this.locationList = await libs.fetchLocationsOfGeorgia()
       } catch (error) {
@@ -92,7 +93,7 @@
       },
       async tryToSaveMainInfo() {
         try {
-          await this.$http.put(this.baseUrl, this.profileData)
+          await this.$http.put(this.baseUrl, this.profileData, {headers: utils.getHeaders()})
           bus.$emit('success', 'პროფილი წარმატებით შეინახა')
         } catch (error) {
           bus.$emit('error', error)

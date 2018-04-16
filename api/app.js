@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const umpack = require('./umpack')
 
 const app = express()
 
@@ -13,6 +14,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }))
 app.use(express.static('../public/dist'))
+
+app.use('/um', umpack.router)
 
 app.use(vacancies.baseUrl, vacancies.router)
 app.use(users.baseUrl, users.router)

@@ -18,7 +18,15 @@ function isNullOrUndefined(value) {
   return value === null || value === undefined
 }
 
+function getHeaders() {
+  return {
+    authorization: this.token
+  }
+}
+
 export default {
   hashOfString: hashCode,
-  isNullOrUndefined
+  isNullOrUndefined,
+  token: null,
+  getHeaders
 }

@@ -102,9 +102,6 @@ import libs from '../../libs'
 import { bus } from '../common/bus'
 
 const baseUrl = '/api/users/profile/experiences'
-const headers = {
-  username: 'test'
-} // temporary headers until um is written
 
 export default {
   name: 'experiences',
@@ -119,7 +116,7 @@ export default {
     this.currentExperience = this.experienceStartState()
 
     let response = await this.$http.get(baseUrl, {
-      headers
+      headers: utils.getHeaders()
     })
 
     this.experiences = response.data
@@ -186,7 +183,7 @@ export default {
     },
     async addExperience() {
       try {
-        let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers})
+        let response = await this.$http.post(baseUrl, this.experienceToSubmit, {headers: utils.getHeaders()})
 
         this.experienceToSubmit.id = response.data
 
@@ -203,7 +200,7 @@ export default {
       try {
         let url = baseUrl + '/' + this.experienceToSubmit.id
 
-        await this.$http.put(url, this.experienceToSubmit, {headers})
+        await this.$http.put(url, this.experienceToSubmit, {headers: utils.getHeaders()})
 
         let expToEdit = this.experiences.find(item => item.id === this.experienceToSubmit.id)
 
@@ -220,7 +217,7 @@ export default {
       try {
         let url = baseUrl + '/' + id
 
-        await this.$http.delete(url, {headers})
+        await this.$http.delete(url, {headers: utils.getHeaders()})
 
         let index = this.experiences.findIndex(item => item.id === id)
 

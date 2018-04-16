@@ -130,9 +130,6 @@ import libs from '../../libs'
 import utils from '../../utils'
 
 const baseUrl = 'api/users/profile/educations'
-const headers = {
-  username: 'test'
-} // temporary headers until um is written
 const academicEducationType = 'უმაღლესი განათლება'
 const informalEducationType = 'არაფორმალური განათლება'
 
@@ -159,12 +156,12 @@ export default {
         formalEducationLevels,
         formalEduLevelResponse
       ] = await Promise.all([
-        this.$http.get(baseUrl, {headers}),
+        this.$http.get(baseUrl, {headers: utils.getHeaders()}),
         libs.fetchLocationsOfGeorgia(),
         libs.fetchEducationTypes(),
         libs.fetchEducationLevels(),
         libs.fetchFormalEducationLevels(),
-        this.$http.get(baseUrl + '/formalEducationLevel', {headers})
+        this.$http.get(baseUrl + '/formalEducationLevel', {headers: utils.getHeaders()})
       ])
 
       this.educations = response.data
@@ -222,7 +219,7 @@ export default {
         let response = await this.$http.post(
           baseUrl,
           this.educationToSubmit,
-          {headers}
+          {headers: utils.getHeaders()}
         )
 
         this.educationToSubmit.id = response.data
@@ -240,7 +237,7 @@ export default {
       try {
         let url = baseUrl + '/' + this.educationToSubmit.id
 
-        await this.$http.put(url, this.educationToSubmit, {headers})
+        await this.$http.put(url, this.educationToSubmit, {headers: utils.getHeaders()})
 
         let education = this.educations.find(
           item => item.id === this.educationToSubmit.id
@@ -258,7 +255,7 @@ export default {
     async deleteEducation(id) {
       let url = baseUrl + '/' + id
 
-      await this.$http.delete(url, {headers})
+      await this.$http.delete(url, {headers: utils.getHeaders()})
 
       let index = this.educations.findIndex(item => item.id === id)
 
@@ -316,7 +313,7 @@ export default {
       let url = baseUrl + '/formalEducationLevel'
 
       try {
-        await this.$http.post(url, {level: value}, {headers})
+        await this.$http.post(url, {level: value}, {headers: utils.getHeaders()})
 
         this.formalEducationLevelName = value
       } catch (error) {

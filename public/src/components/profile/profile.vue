@@ -21,9 +21,6 @@
   import educations from './educations'
 
   const baseUrl = '/api/users/profile'
-  const headers = {
-    username: 'test'
-  } // temporary headers until um is written
 
   export default {
     name: 'profile',
@@ -34,7 +31,7 @@
       }
     },
     created() {
-      this.$http.get(baseUrl, {headers})
+      this.$http.get(baseUrl, {headers: utils.getHeaders()})
         .then(response => {
           this.myProfile = response.data
         })

@@ -1,17 +1,18 @@
 const router = require('express').Router()
+const isAuthorized = require('../umpack').isAuthorized
 
 const baseUrl = '/api/vacancies'
 
 const vacancyInteractor = require('../interactors/vacancy.interactor')
 const utils = require('../utils')
 
-router.get('/', function(req, res, next) {
+router.get('/', isAuthorized, function(req, res, next) {
   vacancyInteractor.getList(req.query.query)
     .then(res.send.bind(res))
     .catch(next)
 })
 
-router.get('/own', function(req, res, next) {
+router.get('/own', isAuthorized, function(req, res, next) {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.getUserVacancies(userName)
@@ -19,13 +20,13 @@ router.get('/own', function(req, res, next) {
     .catch(next)
 })
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', isAuthorized, function(req, res, next) {
   vacancyInteractor.getById(req.params.id)
     .then(res.send.bind(res))
     .catch(next)
 })
 
-router.post('/', function(req, res, next) {
+router.post('/', isAuthorized, function(req, res, next) {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.addVacancy(userName, req.body)
@@ -37,7 +38,7 @@ router.post('/', function(req, res, next) {
     .catch(next)
 })
 
-router.put('/:id', function(req, res, next) {
+router.put('/:id', isAuthorized, function(req, res, next) {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.editVacancy(userName, req.params.id, req.body)
@@ -49,7 +50,7 @@ router.put('/:id', function(req, res, next) {
     .catch(next)
 })
 
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', isAuthorized, function(req, res, next) {
   const userName = utils.getUserNameFromRequest(req)
 
   vacancyInteractor.deleteVacancy(userName, req.params.id)

@@ -9,11 +9,9 @@
 <script>
 import skills from '../common/skills'
 import { bus } from '../common/bus'
+import utils from '../../utils'
 
 const baseUrl = '/api/users/profile/skills'
-const headers = {
-  username: 'test'
-} // temporary headers until um is written
 
 export default {
   name: 'profile-skills',
@@ -22,7 +20,7 @@ export default {
   }),
   async created() {
     try {
-      let response = await this.$http.get(baseUrl, {headers})
+      let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
 
       this.skills = response.data
     } catch (error) {
@@ -44,7 +42,7 @@ export default {
 
       try {
         await this.$http.post(baseUrl, skillObject, {
-          headers
+          headers: utils.getHeaders()
         })
 
         this.skills.push(skillObject)
@@ -65,7 +63,7 @@ export default {
         const url = baseUrl + `/${skill}`
 
         await this.$http.delete(url, {
-          headers
+          headers: utils.getHeaders()
         })
 
         this.skills.splice(indexOfSkill, 1)

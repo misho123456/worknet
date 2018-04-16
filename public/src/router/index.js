@@ -5,6 +5,7 @@ import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancy-add'
+import login from '../components/um/login'
 
 Vue.use(Router)
 
@@ -35,6 +36,10 @@ export default new Router({
       path: '/vacancies/new',
       name: 'vacancy-add',
       component: vacancyAdd
+    },
+    {
+      path: '/login',
+      component: login
     }
   ]
 })

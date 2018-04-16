@@ -14,3 +14,9 @@ elastic:
   educationLevelType: 'educationLevel'
   formalEducationLevelIndex: 'formaleducationlevel'
   formalEducationLevelType: 'formalEducationLevel'
+um:
+  mongodbConnectionString: 'mongodb://localhost:27017/umpack'
+  accessTokenSecret: 'myrandomstring'
+  passwordHashSecret: 'mypasswordsecret'
+  accessTokenExpiresIn: '1h'
+  cookieAccessTokenName: 'accessToken'
