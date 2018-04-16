@@ -8,6 +8,7 @@ import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancy-add'
 import login from '../components/um/login'
+import register from '../components/um/register'
 import utils from '../utils'
 
 Vue.use(Router)
@@ -44,12 +45,17 @@ let router = new Router({
       path: '/login',
       component: login,
       name: 'login'
+    },
+    {
+      path: '/register',
+      component: register,
+      name: 'register'
     }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.path === '/login') {
+  if (to.path === '/login' || to.path === '/register') {
     return next()
   }
 
