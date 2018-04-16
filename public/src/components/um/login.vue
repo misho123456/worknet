@@ -18,6 +18,7 @@
 
 <script>
 import Cookies from 'js-cookie'
+import {bus} from '../common/bus'
 
 export default {
   name: 'login',
@@ -27,14 +28,18 @@ export default {
   }),
   methods: {
     async login() {
-      let response = await this.$http.post('/um/login', {
-        userName: this.userName,
-        password: this.password
-      })
+      try {
+        let response = await this.$http.post('/um/login', {
+          userName: this.userName,
+          password: this.password
+        })
 
-      Cookies.set('token', response.data)
+        Cookies.set('token', response.data)
 
-      this.$router.push('/profile')
+        this.$router.push('/profile')
+      } catch (error) {
+        bus.$emit('error', error)
+      }
     }
   }
 }
