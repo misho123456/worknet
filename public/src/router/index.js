@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Cookies from 'js-cookie'
+import axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
 import vacancyView from '../components/vacancy/vacancy-view'
 import vacancyAdd from '../components/vacancy/vacancy-add'
 import login from '../components/um/login'
+import utils from '../utils'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -39,7 +42,29 @@ export default new Router({
     },
     {
       path: '/login',
-      component: login
+      component: login,
+      name: 'login'
     }
   ]
 })
+
+router.beforeEach(async (to, from, next) => {
+  if (to.path === '/login') {
+    return next()
+  }
+
+  if (!Cookies.get('token')) {
+    router.push('/login')
+    return
+  }
+
+  try {
+    await axios.head('/um/authorization', {headers: utils.getHeaders()})
+
+    next()
+  } catch (error) {
+    router.push('/login')
+  }
+})
+
+export default router
