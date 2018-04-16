@@ -55,21 +55,37 @@ let router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.path === '/login' || to.path === '/register') {
-    return next()
-  }
-
   if (!Cookies.get('token')) {
-    router.push('/login')
+    if (to.path === '/login' || to.path === '/register') {
+      next()
+      return
+    }
+
+    if (to.path === '/vacancies') {
+      next()
+      return
+    }
+
+    router.push('/vacancies')
+
     return
   }
 
   try {
     await axios.head('/um/authorization', {headers: utils.getHeaders()})
 
+    if (to.path === '/login' || to.path === '/register') {
+      return
+    }
+
     next()
   } catch (error) {
-    router.push('/login')
+    if (to.path === '/login' || to.path === '/register') {
+      next()
+      return
+    }
+
+    router.push('/vacancies')
   }
 })
 
