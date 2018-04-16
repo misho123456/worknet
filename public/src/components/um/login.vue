@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" @keyup.enter="login">
     <b-form-group label="მომხმარებლის სახელი">
        <b-form-input v-model="userName"
                     type="text"

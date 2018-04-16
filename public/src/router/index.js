@@ -55,38 +55,25 @@ let router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (!Cookies.get('token')) {
+  if (!await utils.isTokenValid()) {
     if (to.path === '/login' || to.path === '/register') {
       next()
       return
     }
-
     if (to.path === '/vacancies') {
       next()
       return
     }
-
     router.push('/vacancies')
-
     return
   }
 
-  try {
-    await axios.head('/um/authorization', {headers: utils.getHeaders()})
-
-    if (to.path === '/login' || to.path === '/register') {
-      return
-    }
-
-    next()
-  } catch (error) {
-    if (to.path === '/login' || to.path === '/register') {
-      next()
-      return
-    }
-
-    router.push('/vacancies')
+  if (to.path === '/login' || to.path === '/register') {
+    router.push('/profile')
+    return
   }
+
+  next()
 })
 
 export default router
