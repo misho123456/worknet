@@ -50,6 +50,12 @@ export default {
       if (this.open === false) {
         this.open = true
         this.current = 0
+
+        return
+      }
+
+      if (this.current > this.suggestions.length - 1) {
+        this.current = 0
       }
     },
     up() {
@@ -58,7 +64,7 @@ export default {
       }
     },
     down() {
-      if (this.current < this.list.length - 1) {
+      if (this.current < this.suggestions.length - 1) {
         this.current++
       }
     },
@@ -68,7 +74,7 @@ export default {
     suggestionClick(index) {
       this.open = false
 
-      this.inputValue = this.list[index]
+      this.inputValue = this.suggestions[index]
 
       this.$emit('input', this.inputValue)
     },
@@ -81,7 +87,7 @@ export default {
 
       this.open = false
 
-      this.inputValue = this.list[this.current]
+      this.inputValue = this.suggestions[this.current]
 
       this.$emit('input', this.inputValue)
     }
