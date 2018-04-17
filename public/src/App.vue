@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <toolbar></toolbar>
     <router-view/>
     <notify></notify>
   </div>
@@ -7,9 +8,11 @@
 
 <script>
   import notify from './components/common/notify'
+  import toolbar from './components/toolbar'
+
   export default {
     name: 'app',
-    components: { notify }
+    components: { notify, toolbar }
   }
 </script>
 
@@ -20,7 +23,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
     background: whitesmoke;
   }
 

@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Cookies from 'js-cookie'
-import axios from 'axios'
 import HelloWorld from '@/components/HelloWorld'
 import profile from '../components/profile/profile'
 import vacancies from '../components/vacancy/vacancies'
@@ -10,6 +8,7 @@ import vacancyAdd from '../components/vacancy/vacancy-add'
 import login from '../components/um/login'
 import register from '../components/um/register'
 import utils from '../utils'
+import { bus } from '../components/common/bus'
 
 Vue.use(Router)
 
@@ -56,6 +55,7 @@ let router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   if (!await utils.isTokenValid()) {
+    bus.$emit('logout')
     if (to.path === '/login' || to.path === '/register') {
       next()
       return
@@ -64,6 +64,7 @@ router.beforeEach(async (to, from, next) => {
       next()
       return
     }
+
     router.push('/vacancies')
     return
   }

@@ -36,6 +36,8 @@ export default {
 
         Cookies.set('token', response.data)
 
+        bus.$emit('login')
+
         this.$router.push('/profile')
       } catch (error) {
         bus.$emit('error', error)
