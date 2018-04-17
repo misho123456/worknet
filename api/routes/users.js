@@ -7,8 +7,8 @@ const baseUrl = '/api/users'
 
 router.get('/profile/maininfo', isAuthorized, async (req, res, next) => {
   try {
-    // let userName = utils.getUserNameFromRequest(req)
-    let userName = 'test'
+    let userName = utils.getUserNameFromRequest(req)
+
     let result = await userInteractor.getUserMainInfo(userName)
     next({ result })
   } catch (error) {
@@ -18,8 +18,8 @@ router.get('/profile/maininfo', isAuthorized, async (req, res, next) => {
 
 router.put('/profile/maininfo', isAuthorized, async (req, res, next) => {
   try {
-    // let userName = utils.getUserNameFromRequest(req)
-    let userName = 'test'
+    let userName = utils.getUserNameFromRequest(req)
+
     let result = await userInteractor.updateMainInfo(userName, req.body)
     next({ result })
   } catch (error) {
