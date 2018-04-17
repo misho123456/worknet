@@ -28,6 +28,7 @@
 
 <script>
   import autocomplete from './autocomplete'
+  import utils from '../../utils'
 
   const minimumChars = 2
   const searchUrl = '/api/skills/search'
@@ -60,7 +61,7 @@
 
         if (value.length < minimumChars) return
 
-        let {data} = await this.$http.get(searchUrl, {params: {query: value}})
+        let {data} = await this.$http.get(searchUrl, {params: {query: value}, headers: utils.getHeaders()})
 
         this.autocompleteSkills = data || []
       }

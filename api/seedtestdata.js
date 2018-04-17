@@ -72,7 +72,7 @@ const skillIndex = {
 }
 
 const testUsers = [{
-  'userName': 'test',
+  'userName': 'root',
   'firstName': 'სახელი',
   'lastName': 'გვარი',
   'personalId': '00000000000',
