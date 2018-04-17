@@ -16,6 +16,8 @@ https://www.docker.elastic.co/
 ```
 docker run --name worknet -p 9200:9200 -itd docker.elastic.co/elasticsearch/elasticsearch:6.1.1
 ```
+#### Docker კონტეინერი (mongo)
+docker run --name worknet-mongo -p 27017:27017 -itd mongo
 
 #### პირველადი სატესტო მონაცემების ჩაწერა ბაზაში (Test Data)
 ```
