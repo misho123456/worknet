@@ -8,7 +8,6 @@
 
 <script>
 import Cookies from 'js-cookie'
-import utils from '../utils'
 import { bus } from './common/bus'
 
 export default {
