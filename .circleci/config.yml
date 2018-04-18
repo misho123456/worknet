@@ -27,5 +27,8 @@ jobs:
       - run:
           command: ./node_modules/.bin/eslint ./
           working_directory: ~/repo/api
+      - run:
+          command: ./node_modules/.bin/eslint ./
+          working_directory: ~/repo/public
 
 
