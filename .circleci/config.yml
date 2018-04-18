@@ -25,7 +25,7 @@ jobs:
 
       # run lint!
       - run:
-          command: ./node_modules/.bin/eslint
+          command: ./node_modules/.bin/eslint ./
           working_directory: ~/repo/api
 
 
