@@ -27,6 +27,12 @@ jobs:
       - run:
           command: ./node_modules/.bin/eslint ./
           working_directory: ~/repo/api
+      
+      - run:
+          command: npm install
+          working_directory: ~/repo/public
+          
+      # run lint!    
       - run:
           command: ./node_modules/.bin/eslint ./
           working_directory: ~/repo/public
