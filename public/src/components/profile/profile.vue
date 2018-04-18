@@ -9,6 +9,8 @@
 
     <experiences></experiences>
 
+    <languages></languages>
+
   </div>
 
 </template>
@@ -19,6 +21,7 @@
   import utils from '../../utils'
   import experiences from './experiences'
   import educations from './educations'
+  import languages from './languages'
 
   const baseUrl = '/api/users/profile'
 
@@ -46,7 +49,8 @@
       'maininfo': maininfo,
       'profile-skills': profileSkills,
       'experiences': experiences,
-      'educations': educations
+      'educations': educations,
+      'languages': languages
     }
   }
 </script>
