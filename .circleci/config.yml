@@ -23,7 +23,9 @@ jobs:
           command: npm install
           working_directory: ~/repo/api
 
-      # run tests!
-      - run: npm test
+      # run lint!
+      - run:
+          command: ./node_modules/.bin/eslint
+          working_directory: ~/repo/api
 
 
