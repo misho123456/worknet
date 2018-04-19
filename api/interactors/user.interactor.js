@@ -2,6 +2,7 @@ const _ = require('lodash')
 const shortid = require('shortid')
 const userRepository = require('../infrastructure/user.repository')
 const skillInterctor = require('./skill.interactor')
+const desirableJobInterctor = require('./desirable.job.interactor')
 const factory = require('../domain/factory')
 const RecordError = require('../exceptions/record.error')
 const domainUtils = require('../domain/domainUtils')
@@ -85,6 +86,48 @@ async function removeSkill(userName, skill) {
 
   try {
     user.removeSkill(skill)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function getDesirableJobs(userName) {
+  return await userRepository.getDesirableJobs(userName)
+}
+
+async function addDesirableJob(userName, desirableJob) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.addDesirableJob(desirableJob)
+
+    await desirableJobInterctor.addIfNotExists(desirableJob)
+  } catch (e) {
+    if (!(e instanceof RecordError)) {
+      throw e
+    }
+
+    return
+  }
+
+  return await userRepository.saveUser(user)
+}
+
+async function removeDesirableJob(userName, desirableJob) {
+  let userObject = await userRepository.getUserByUserName(userName)
+
+  let user = factory.createUser(userObject)
+
+  try {
+    user.removeDesirableJob(desirableJob)
   } catch (e) {
     if (!(e instanceof RecordError)) {
       throw e
@@ -240,6 +283,9 @@ module.exports = {
   getSkills,
   addSkill,
   removeSkill,
+  getDesirableJobs,
+  addDesirableJob,
+  removeDesirableJob,
   getJobExperiences,
   addJobExperience,
   replaceJobExperience,

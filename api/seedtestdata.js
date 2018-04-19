@@ -551,4 +551,4 @@ seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationTyp
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
-seedData(testDesirableJobs, 'desirableJob', desirableJobIndex, 'skill', true)
+seedData(testDesirableJobs, 'desirablejob', desirableJobIndex, 'desirablejob', true)
