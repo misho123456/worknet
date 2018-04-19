@@ -261,6 +261,54 @@ router.post('/profile/activation', isAuthorized, (req, res, next) => {
     .catch(next)
 })
 
+router.get('/profile/languages', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getLanguages(userName)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/languages', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.addLanguage(userName, req.body)
+
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/languages/:languageName', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.removeLanguage(userName, req.params.languageName)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.put('/profile/languages/:languageName/level', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.setLanguageLevel(userName, req.params.languageName, req.body.languageLevel)
+
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
 module.exports = {
   router,
   baseUrl

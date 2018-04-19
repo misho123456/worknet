@@ -272,6 +272,51 @@ async function setFormalEducationLevel(userName, level) {
   await userRepository.setFormalEducationLevel(userName, level)
 }
 
+async function getLanguages(userName) {
+  return await userRepository.getLanguages(userName)
+}
+
+async function addLanguage(userName, languageObject) {
+  let language = {
+    languageName: languageObject.languageName,
+    languageLevel: languageObject.languageLevel
+  }
+
+  let languages = await userRepository.getLanguages(userName)
+
+  let foundLanguage = languages.find(item => item.languageName === language.languageName)
+
+  if (foundLanguage) throw new RecordError('ენის ცოდნა უკვე დამატებულია პროფილში')
+
+  languages.push(language)
+
+  await userRepository.saveLanguages(userName, languages)
+}
+
+async function setLanguageLevel(userName, languageName, level) {
+  let languages = await userRepository.getLanguages(userName)
+
+  let languageIndex = languages.findIndex(item => item.languageName === languageName)
+
+  if (languageIndex === -1) throw new RecordError('მითითებული ენის ცოდნა არაა დამატებული პროფილში')
+
+  languages[languageIndex].languageLevel = level
+
+  await userRepository.saveLanguages(userName, languages)
+}
+
+async function removeLanguage(userName, languageName) {
+  let languages = await userRepository.getLanguages(userName)
+
+  let languageIndex = languages.findIndex(item => item.languageName === languageName)
+
+  if (languageIndex === -1) throw new RecordError('მითითებული ენის ცოდნა არაა დამატებული პროფილში')
+
+  languages.splice(languageIndex, 1)
+
+  await userRepository.saveLanguages(userName, languages)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -295,5 +340,9 @@ module.exports = {
   editEducation,
   deleteEducation,
   getFormalEducationLevel,
-  setFormalEducationLevel
+  setFormalEducationLevel,
+  getLanguages,
+  addLanguage,
+  setLanguageLevel,
+  removeLanguage
 }

@@ -297,6 +297,51 @@ async function setFormalEducationLevel(userName, level) {
   await client.updateByQuery(options)
 }
 
+async function getLanguages(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'languages'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.languages
+}
+
+async function saveLanguages(userName, languages) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      },
+      script: {
+        source: 'ctx._source.languages = params.languages',
+        params: {
+          languages
+        }
+      }
+    }
+  }
+
+  await client.updateByQuery(options)
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -310,5 +355,7 @@ module.exports = {
   getEducations,
   saveEducations,
   getFormalEducationLevel,
-  setFormalEducationLevel
+  setFormalEducationLevel,
+  getLanguages,
+  saveLanguages
 }
