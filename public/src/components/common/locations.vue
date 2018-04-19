@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="row">
-      <b-form-select v-model="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @input="locationChanged"
+      <b-form-select :value="selectedLocationName" :options="locations" value-field="locationName" text-field="locationName" @change="locationChanged"
         class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რეგიონი -</option>
         </template>
       </b-form-select>
-      <b-form-select v-model="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
-        @input="locationUnitChanged" class="mb-3 col-6">
+      <b-form-select :value="selectedLocationUnitName" :options="selectedLocation.units" value-field="locationUnitName" text-field="locationUnitName"
+        @change="locationUnitChanged" class="mb-3 col-6">
         <template slot="first">
           <option :value="null">- აირჩიე რაიონი -</option>
         </template>
@@ -34,27 +34,31 @@
 
   export default {
     name: 'locations',
-    props: ['locations', 'editable', 'currentLocationName', 'currentLocationUnitName'],
+    props: ['locations', 'currentLocationName', 'currentLocationUnitName'],
     data() {
       return {
+        locationDefaultObject: Object.freeze({
+          locationName: '',
+          units: []
+        }),
         selectedLocationName: '',
         selectedLocationUnitName: '',
-        selectedLocation: {}
+        selectedLocation: this.locationDefaultObject
       }
     },
     created() {
-      this.locationChanged(this.currentLocationName)
-      this.selectedLocationName = this.currentLocationName
-      this.selectedLocationUnitName = this.currentLocationUnitName
+      this.selectedLocationName = this.currentLocationName || ''
+      this.selectedLocationUnitName = this.currentLocationUnitName || ''
+
+      this.selectedLocation = this.locationDefaultObject
+
+      this.loadOptions()
     },
     watch: {
       currentLocationName(value) {
-        // let tempLocationUnitName = this.selectedLocationUnitName
         this.selectedLocationName = value
-        this.locationChanged(value)
-        // this.selectedLocationUnitName = tempLocationUnitName
-        this.selectedLocationUnitName = null
-        console.log('location changed')
+
+        this.loadOptions()
       },
       currentLocationUnitName(value) {
         this.selectedLocationUnitName = value
@@ -62,20 +66,26 @@
     },
     methods: {
       locationChanged(locationName) {
-        // this.selectedLocationUnitName = null
+        this.selectedLocationName = locationName
+
         let location = this.locations.find(t => t.locationName === locationName)
-        if (location === undefined) {
-          this.selectedLocation = {}
-          return
-        }
-        this.selectedLocation = location
-        // this.selectedLocationUnitName = null
+
+        this.selectedLocation = location || this.locationDefaultObject
       },
       locationUnitChanged(unitName) {
+        this.selectedLocationUnitName = unitName
+
         this.$emit('onLocationChanged', {
           locationName: this.selectedLocationName,
           locationUnitName: this.selectedLocationUnitName
         })
+      },
+      loadOptions() {
+        if (this.selectedLocation.locationName !== this.selectedLocationName) {
+          let location = this.locations.find(item => item.locationName === this.selectedLocationName)
+
+          this.selectedLocation = location || this.locationDefaultObject
+        }
       }
     }
   }

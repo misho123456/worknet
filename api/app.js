@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const config = require('config')
 const umpack = require('./umpack')
 
 const app = express()
@@ -37,4 +38,4 @@ app.use((response, req, res, next) => {
 
 app.get('*', (req, res) => res.redirect('/'))
 
-app.listen(3000, () => console.log('started'))
+app.listen(config.get('port'), () => console.log('started'))
