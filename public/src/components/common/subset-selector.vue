@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="skills-container">
+    <div class="subset-selector">
       <div style="position:relative">
-        <autocomplete :value="newSkill" :list="autocompleteSkills" @input="onAutocompleteInput" @enter="addSkill(newSkill)">
+        <autocomplete :value="newElement" :list="autocompleteElements" @input="onAutocompleteInput" @enter="addElement(newElement)">
           <div slot="input" slot-scope="{onInput, inputValue}">
             <b-input-group v-if="editable">
               <b-form-input type="text"
                 autocomplete="off"
-                placeholder="მაგ. ანალიტიკოსი"
+                :placeholder="placeholder"
                 :value="inputValue"
                 @input="onInput">
               </b-form-input>
               <b-input-group-button slot="right">
-                <b-btn @click="addSkill(newSkill)">დამატება</b-btn>
+                <b-btn @click="addElement(newElement)">დამატება</b-btn>
               </b-input-group-button>
             </b-input-group>
           </div>
@@ -20,7 +20,7 @@
       </div>
       <div class="chip" v-for="item in list">
         {{item}}
-        <span v-if="editable" class="closebtn" @click="removeSkill(item)">&times;</span>
+        <span v-if="editable" class="closebtn" @click="removeElement(item)">&times;</span>
       </div>
     </div>
   </div>
@@ -28,42 +28,40 @@
 
 <script>
   import autocomplete from './autocomplete'
-  import utils from '../../utils'
 
   const minimumChars = 2
-  const searchUrl = '/api/skills/search'
 
   export default {
-    name: 'skills',
-    props: ['list', 'editable'],
+    name: 'subset-selector',
+    props: ['list', 'editable', 'placeholder', 'getAutocompleteData'],
     data() {
       return {
-        newSkill: '',
-        autocompleteSkills: []
+        newElement: '',
+        autocompleteElements: []
       }
     },
     methods: {
-      addSkill() {
-        if (!this.newSkill) return
+      addElement() {
+        if (!this.newElement) return
 
-        this.$emit('onAddNewSkill', this.newSkill)
+        this.$emit('onAddNewElement', this.newElement)
       },
-      removeSkill(skill) {
-        this.$emit('onRemoveSkill', skill)
+      removeElement(element) {
+        this.$emit('onRemoveElement', element)
       },
       clear() {
-        this.newSkill = ''
+        this.newElement = ''
       },
       async onAutocompleteInput(value) {
-        if (this.newSkill === value) return
+        if (this.newElement === value) return
 
-        this.newSkill = value
+        this.newElement = value
 
         if (value.length < minimumChars) return
 
-        let {data} = await this.$http.get(searchUrl, {params: {query: value}, headers: utils.getHeaders()})
+        let {data} = await this.getAutocompleteData(value)
 
-        this.autocompleteSkills = data || []
+        this.autocompleteElements = data || []
       }
     },
     components: {

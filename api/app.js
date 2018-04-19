@@ -7,6 +7,7 @@ const app = express()
 const vacancies = require('./routes/vacancies')
 const users = require('./routes/users')
 const skills = require('./routes/skills')
+const desirableJobs = require('./routes/desirable.jobs')
 const libs = require('./routes/libs')
 
 app.use(bodyParser.json())
@@ -20,6 +21,7 @@ app.use('/um', umpack.router)
 app.use(vacancies.baseUrl, vacancies.router)
 app.use(users.baseUrl, users.router)
 app.use(skills.baseUrl, skills.router)
+app.use(desirableJobs.baseUrl, desirableJobs.router)
 app.use(libs.baseUrl, libs.router)
 
 app.use((response, req, res, next) => {

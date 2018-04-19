@@ -190,7 +190,7 @@ const testUsers = [{
   'militaryObligation': false,
   'desirableJobs': [
     {
-      'name': 'მთავარი მზარეულები '
+      'name': 'მთავარი მზარეულები'
     },
     {
       'name': 'ფინანსთა მენეჯერები'
@@ -524,7 +524,11 @@ const testDesirableJobs = [
   { name: 'Housekeeper' },
   { name: 'Lion Tamer' },
   { name: 'Web Developer' },
-]
+  { name: 'მთავარი მზარეულები' },
+  { name: 'ფინანსთა მენეჯერები' },
+  { name: 'საინფორმაციო ტექნოლოგიის ტრენერები' },
+  { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' }
+]  
 
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {

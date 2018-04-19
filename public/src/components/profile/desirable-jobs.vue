@@ -1,84 +1,97 @@
 <template>
 <div class="desirable-jobs">
   <b-card title="სასურველი სამსახური">
-    <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
+    <subset-selector
+      ref="desirableJobInput"
+      placeholder="მაგ. პროგრამისტი"
+      :editable="true"
+      :list="desirableJobList"
+      :getAutocompleteData="searchDesirableJobs"
+      @onAddNewElement="onAddNewDesirableJob"
+      @onRemoveElement="onRemoveDesirableJob"
+    />
   </b-card>
 </div>
 </template>
 
 <script>
-import skills from '../common/skills'
+import subsetSelector from '../common/subset-selector'
 import { bus } from '../common/bus'
 import utils from '../../utils'
 
-const baseUrl = '/api/users/profile/skills'
+const baseUrl = '/api/users/profile/desirableJobs'
+const searchUrl = '/api/desirableJobs/search'
 
 export default {
-  name: 'desirable-jobs',
+  name: 'profile-desirable-jobs',
   data: () => ({
-    skills: []
+    desirableJobs: []
   }),
   async created() {
     try {
       let response = await this.$http.get(baseUrl, {headers: utils.getHeaders()})
 
-      this.skills = response.data
+      this.desirableJobs = response.data
     } catch (error) {
       bus.$emit('error', error)
     }
   },
   methods: {
-    async onAddNewSkill(skill) {
-      let indexOfSkill = this.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
-      if (indexOfSkill !== -1) {
+    async searchDesirableJobs(desirableJob) {
+      return await this.$http.get(searchUrl, {params: {query: desirableJob}, headers: utils.getHeaders()})
+    },
+
+    async onAddNewDesirableJob(desirableJob) {
+      let indexOfDesirableJob = this.desirableJobs.findIndex(t => t.name.toLowerCase() === desirableJob.toLowerCase())
+      if (indexOfDesirableJob !== -1) {
         // TODO alert or notify
-        console.error('this skill already exists')
+        console.error('this desirable job already exists')
         return
       }
 
-      let skillObject = {
-        skillName: skill
+      let desirableJobObject = {
+        name: desirableJob
       }
 
       try {
-        await this.$http.post(baseUrl, skillObject, {
+        await this.$http.post(baseUrl, desirableJobObject, {
           headers: utils.getHeaders()
         })
 
-        this.skills.push(skillObject)
-        this.$refs.skillInput.clear()
+        this.desirableJobs.push(desirableJobObject)
+        this.$refs.desirableJobInput.clear()
       } catch (error) {
         bus.$emit('error', error)
       }
     },
-    async onRemoveSkill(skill) {
-      let indexOfSkill = this.skills.findIndex(t => t.skillName === skill)
-      if (indexOfSkill === -1) {
+    async onRemoveDesirableJob(desirableJob) {
+      let indexOfDesirableJob = this.desirableJobs.findIndex(t => t.name === desirableJob)
+      if (indexOfDesirableJob === -1) {
         // TODO alert or notify
-        console.error('can\'t find index of skill')
+        console.error('can\'t find index of desirable job')
         return
       }
 
       try {
-        const url = baseUrl + `/${skill}`
+        const url = baseUrl + `/${desirableJob}`
 
         await this.$http.delete(url, {
           headers: utils.getHeaders()
         })
 
-        this.skills.splice(indexOfSkill, 1)
+        this.desirableJobs.splice(indexOfDesirableJob, 1)
       } catch (error) {
         bus.$emit('error', error)
       }
     }
   },
   computed: {
-    skillList() {
-      return this.skills.map(item => item.skillName)
+    desirableJobList() {
+      return this.desirableJobs.map(item => item.name)
     }
   },
   components: {
-    skills
+    'subset-selector': subsetSelector
   }
 }
 </script>

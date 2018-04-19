@@ -84,6 +84,39 @@ router.delete('/profile/skills/:skillName', isAuthorized, async (req, res, next)
   }
 })
 
+router.get('/profile/desirableJobs', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    let result = await userInteractor.getDesirableJobs(userName)
+    next({result})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.post('/profile/desirableJobs', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.addDesirableJob(userName, req.body.name)
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
+router.delete('/profile/desirableJobs/:desirableJobName', isAuthorized, async (req, res, next) => {
+  let userName = utils.getUserNameFromRequest(req)
+
+  try {
+    await userInteractor.removeDesirableJob(userName, req.params.desirableJobName)
+    next({})
+  } catch (error) {
+    next({error})
+  }
+})
+
 router.get('/profile/experiences', isAuthorized, async (req, res, next) => {
   let userName = utils.getUserNameFromRequest(req)
 
