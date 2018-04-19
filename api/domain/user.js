@@ -18,6 +18,20 @@ class User {
 
     this.skills.splice(index, 1)
   }
+
+  addDesirableJob(desirableJob) {
+    if (this.desirableJobs.find(item => item.name === desirableJob)) throw new RecordError('desirable job already exists')
+
+    this.desirableJobs.push({ name: desirableJob })
+  }
+
+  removeDesirableJob(desirableJob) {
+    let index = this.desirableJobs.findIndex(item => item.name === desirableJob)
+
+    if (index === -1) throw new RecordError('desirable job does not exist')
+
+    this.desirableJobs.splice(index, 1)
+  }
 }
 
 module.exports = User

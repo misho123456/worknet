@@ -1,17 +1,26 @@
 <template>
 <div class="profile-skills">
   <b-card title="უნარები">
-    <skills ref="skillInput" :editable="true" :list="skillList" @onAddNewSkill="onAddNewSkill" @onRemoveSkill="onRemoveSkill"></skills>
+    <subset-selector
+      ref="skillInput"
+      placeholder="მაგ. ანალიტიკოსი"
+      :editable="true"
+      :list="skillList"
+      :getAutocompleteData="searchSkills"
+      @onAddNewElement="onAddNewSkill"
+      @onRemoveElement="onRemoveSkill"
+    />
   </b-card>
 </div>
 </template>
 
 <script>
-import skills from '../common/skills'
+import subsetSelector from '../common/subset-selector'
 import { bus } from '../common/bus'
 import utils from '../../utils'
 
 const baseUrl = '/api/users/profile/skills'
+const searchUrl = '/api/skills/search'
 
 export default {
   name: 'profile-skills',
@@ -28,6 +37,10 @@ export default {
     }
   },
   methods: {
+    async searchSkills(skill) {
+      return await this.$http.get(searchUrl, {params: {query: skill}, headers: utils.getHeaders()})
+    },
+
     async onAddNewSkill(skill) {
       let indexOfSkill = this.skills.findIndex(t => t.skillName.toLowerCase() === skill.toLowerCase())
       if (indexOfSkill !== -1) {
@@ -78,7 +91,7 @@ export default {
     }
   },
   components: {
-    skills
+    'subset-selector': subsetSelector
   }
 }
 </script>

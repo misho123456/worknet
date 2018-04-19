@@ -71,6 +71,15 @@ const skillIndex = {
   }
 }
 
+const desirableJobIndex = {
+  'settings': {
+    'index': {
+      'number_of_shards': 1,
+      'number_of_replicas': 1
+    }
+  }
+}
+
 const testUsers = [{
   'userName': 'root',
   'firstName': 'სახელი',
@@ -181,7 +190,7 @@ const testUsers = [{
   'militaryObligation': false,
   'desirableJobs': [
     {
-      'name': 'მთავარი მზარეულები '
+      'name': 'მთავარი მზარეულები'
     },
     {
       'name': 'ფინანსთა მენეჯერები'
@@ -508,6 +517,19 @@ const testSkills = [
   { name: 'oop' }
 ]
 
+const testDesirableJobs = [
+  { name: 'Plumber' },
+  { name: 'Electrical Engineer' },
+  { name: 'Merchant' },
+  { name: 'Housekeeper' },
+  { name: 'Lion Tamer' },
+  { name: 'Web Developer' },
+  { name: 'მთავარი მზარეულები' },
+  { name: 'ფინანსთა მენეჯერები' },
+  { name: 'საინფორმაციო ტექნოლოგიის ტრენერები' },
+  { name: 'პროგრამული უზრუნველყოფის შემუშავება-განვითარების სპეციალისტები' }
+]  
+
 async function seedData(data, index, indexOption, type, dropIndexIfExists = false) {
   try {
     let exists = await client.indices.exists({ index: index })
@@ -533,3 +555,4 @@ seedData(testEducationTypes, 'educationtype', indexDefaultOptions, 'educationTyp
 seedData(testEducationLevels, 'educationlevel', indexDefaultOptions, 'educationLevel', true)
 seedData(testFormalEducationLevels, 'formaleducationlevel', indexDefaultOptions, 'formalEducationLevel', true)
 seedData(testSkills, 'skill', skillIndex, 'skill', true)
+seedData(testDesirableJobs, 'desirablejob', desirableJobIndex, 'desirablejob', true)

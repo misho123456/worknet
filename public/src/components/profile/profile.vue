@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <maininfo></maininfo>
 
     <profile-skills></profile-skills>
@@ -9,10 +8,10 @@
 
     <experiences></experiences>
 
+    <desirable-jobs/>
+
     <languages></languages>
-
   </div>
-
 </template>
 
 <script>
@@ -21,6 +20,7 @@
   import utils from '../../utils'
   import experiences from './experiences'
   import educations from './educations'
+  import desirableJobs from './desirable-jobs'
   import languages from './languages'
 
   const baseUrl = '/api/users/profile'
@@ -50,6 +50,7 @@
       'profile-skills': profileSkills,
       'experiences': experiences,
       'educations': educations,
+      'desirable-jobs': desirableJobs,
       'languages': languages
     }
   }
