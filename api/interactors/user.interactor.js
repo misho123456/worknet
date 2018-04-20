@@ -317,6 +317,10 @@ async function removeLanguage(userName, languageName) {
   await userRepository.saveLanguages(userName, languages)
 }
 
+async function getDesirableJobLocations(userName) {
+  return await userRepository.getDesirableJobLocations(userName)
+}
+
 module.exports = {
   getList,
   getUserMainInfo,
@@ -344,5 +348,6 @@ module.exports = {
   getLanguages,
   addLanguage,
   setLanguageLevel,
-  removeLanguage
+  removeLanguage,
+  getDesirableJobLocations
 }

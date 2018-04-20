@@ -342,6 +342,29 @@ async function saveLanguages(userName, languages) {
   await client.updateByQuery(options)
 }
 
+async function getDesirableJobLocations(userName) {
+  let options = {
+    index,
+    type,
+    body: {
+      query: {
+        term: {
+          userName: userName
+        }
+      }
+    },
+    _sourceInclude: [
+      'desirableJobLocations'
+    ]
+  }
+
+  let result = await client.search(options)
+
+  if (result.hits.total === 0) return []
+
+  return result.hits.hits[0]._source.desirableJobLocations
+}
+
 module.exports = {
   getUsers,
   getMainInfo,
@@ -357,5 +380,6 @@ module.exports = {
   getFormalEducationLevel,
   setFormalEducationLevel,
   getLanguages,
-  saveLanguages
+  saveLanguages,
+  getDesirableJobLocations
 }

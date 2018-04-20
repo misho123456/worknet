@@ -11,6 +11,8 @@
     <desirable-jobs/>
 
     <languages></languages>
+
+    <desirable-job-locations></desirable-job-locations>
   </div>
 </template>
 
@@ -22,6 +24,7 @@
   import educations from './educations'
   import desirableJobs from './desirable-jobs'
   import languages from './languages'
+  import desirableJobLocations from './desirable-job-locations'
 
   const baseUrl = '/api/users/profile'
 
@@ -51,7 +54,8 @@
       'experiences': experiences,
       'educations': educations,
       'desirable-jobs': desirableJobs,
-      'languages': languages
+      'languages': languages,
+      'desirable-job-locations': desirableJobLocations
     }
   }
 </script>
