@@ -545,6 +545,7 @@ async function seedData(data, index, indexOption, type, dropIndexIfExists = fals
     await insertData(index, type, data)
   } catch (error) {
     console.error(error)
+    process.exit();
   }
 }
 
