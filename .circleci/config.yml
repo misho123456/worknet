@@ -36,5 +36,20 @@ jobs:
       - run:
           command: ./node_modules/.bin/eslint ./
           working_directory: ~/repo/public
+      
+      - run:
+          command: npm run build
+          working_directory: ~/repo/public
+
+      - run:
+          command: npm prune --production
+          working_directory: ~/repo/api
+
+      - run:
+          command: npm prune --production
+          working_directory: ~/repo/public
+
+      - store_artifacts:
+          path: ~/repo/api
 
 
