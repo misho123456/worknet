@@ -1,7 +1,7 @@
 <template>
 <div id="vacancies">
   <b-button  variant="primary" @click="redirectToVacancyAdd">
-      ახალი ვაკანსია1
+      ახალი ვაკანსია2
   </b-button>
   <div class="searchArea">
     <div class="form-group flex" @keyup.enter="search">
